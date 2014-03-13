@@ -24,8 +24,12 @@ public class AllySkillsManager {
         this.plugin = plugin;
         
         this.skills = new EnumMap<>(AllySkillType.class);
-        this.addSkill(new Swiftness());
         this.addSkill(new Fireball());
+        this.addSkill(new Heal());
+        this.addSkill(new NightVision());
+        this.addSkill(new PlaneShift());
+        this.addSkill(new Replenish());
+        this.addSkill(new Swiftness());
         this.addSkill(new Teleport());
         
         this.cooldowns = new HashMap<>();
@@ -61,7 +65,7 @@ public class AllySkillsManager {
         },20*60,20*60);
     }
     
-    public void setCooldown(String playerName,AllySkill skill) {
+    public void setCooldown(String playerName,Ally ally,AllySkill skill) {
         Map<AllySkillType,Long> playerCooldowns = this.cooldowns.get(playerName);
         
         if(playerCooldowns == null) {
@@ -70,7 +74,7 @@ public class AllySkillsManager {
             this.cooldowns.put(playerName,playerCooldowns);
         }
         
-        playerCooldowns.put(skill.getType(), System.currentTimeMillis() + skill.getCooldownSeconds()*1000);
+        playerCooldowns.put(skill.getType(), System.currentTimeMillis() + skill.getCooldownSeconds(ally)*1000);
     }
     
     public boolean hasCooldown(String playerName,AllySkill skill) {

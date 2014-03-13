@@ -48,7 +48,7 @@ public class Replenish extends AllySkill {
             int newFoodAmount = 10;
             
             // Double base food amount if primary skill
-            if(ally.getPrimarySkill().equals(this)) {
+            if(ally.getPrimaryClass() == this.getClassType()) {
                 newFoodAmount = newFoodAmount * 2;
             }
             
@@ -62,14 +62,22 @@ public class Replenish extends AllySkill {
                 target.setFoodLevel(newFoodAmount);
             }
             
+            if(caster.equals(target)) {
+                this.send(caster, ally, "used "+this.getName()+" on you!");
+            }
+            else {
+                this.send(caster, ally, "used "+this.getName()+" on "+target.getName()+"!");
+                this.send(target, ally, "used "+this.getName()+" on you!");
+            }
+            
             return true;
         }
         
         if(caster.equals(target)) {
-            this.sendError(caster, "You are already full!");
+            this.sendError(caster, ally, "thinks you are already full!");
         }
         else {
-            this.sendError(caster, target.getName()+" is already full!");
+            this.sendError(caster, ally, "thinks "+target.getName()+" is already full!");
         }
         
         return false;

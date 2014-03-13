@@ -33,56 +33,6 @@ public class LegendaryAlliesCommands implements CommandExecutor {
             }
         }
         
-        /*
-        if(cs.getName().equalsIgnoreCase("Pinkiwi2u")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("zapo301",PetType.HUMAN));
-            
-            return true;
-        }
-        else if(cs.getName().equalsIgnoreCase("Ne0nx3r0") && args.length > 0) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally(args[0],PetType.valueOf(args[0])));
-            return true;
-        }
-        else if(cs.getName().equalsIgnoreCase("Ne0nx3r0")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("Bob",PetType.BAT));
-            return true;
-        }
-        else if(cs.getName().equalsIgnoreCase("RooKirk")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("The Iron Giant",PetType.IRONGOLEM));
-            return true;
-        }
-        else if(cs.getName().equalsIgnoreCase("Birdie83")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("Ne0nx3r0",PetType.HUMAN));
-            
-            return true;
-        }
-        else if(cs.getName().equalsIgnoreCase("sierrabear105")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("Slimer",PetType.SLIME));
-            
-            return true;
-        }
-        else if(cs.getName().equalsIgnoreCase("bluepingie")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("Sheeple",PetType.SHEEP));
-            
-            return true;
-        }
-        
-        
-        if(cs.hasPermission("legendaryallies.tester")) {
-                cs.sendMessage("Summoning your pet");
-            plugin.allyManager.summonAlly((Player) cs, new Ally("Derp",PetType.CHICKEN));
-        }
-        else {
-            cs.sendMessage("Sorry, you are not a Legendary Allies tester.");
-        }*/
-        
         return false;
     }
 
@@ -208,6 +158,12 @@ public class LegendaryAlliesCommands implements CommandExecutor {
             }
             
             AllySkill skill = plugin.skillsManager.getSkillFromType(skillType);
+            
+            if(skill == null) {
+                cs.sendMessage(ChatColor.RED+"Invalid skill!");
+
+                return true;
+            }
             
             ItemStack is = plugin.skillsManager.createSkillDiskItem(skill);
 

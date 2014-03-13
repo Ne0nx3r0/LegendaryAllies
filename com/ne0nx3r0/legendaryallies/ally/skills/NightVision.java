@@ -10,25 +10,26 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Swiftness extends AllySkill {
-    public Swiftness() {
+public class NightVision extends AllySkill {
+    public NightVision() {
         super(
-                AllySkillType.Swiftness,
+                AllySkillType.NightVision,
                 AllyClassType.Wild,
-                "Swiftness",
-                "Ally moves faster, applies to riding as well",
-                30);
+                "Night Vision",
+                "Allows target or self to see in the dark",
+                60
+        );
     }
 
     @Override
     public boolean onInteract(PlayerInteractEvent e, Ally ally) {
-        return this.castSwiftness(e.getPlayer(), ally, e.getPlayer());
+        return this.castNightVision(e.getPlayer(), ally, e.getPlayer());
     }
     
     @Override
     public boolean onDamageOther(EntityDamageByEntityEvent e, Ally ally) {
         if(e.getEntity() instanceof LivingEntity) {
-            return this.castSwiftness((Player) e.getDamager(), ally, (LivingEntity) e.getEntity());
+            return this.castNightVision((Player) e.getDamager(), ally, (LivingEntity) e.getEntity());
         }
         
         return false;
@@ -37,13 +38,13 @@ public class Swiftness extends AllySkill {
     @Override
     public boolean onInteractEntity(PlayerInteractEntityEvent e, Ally ally) {
         if(e.getRightClicked() instanceof LivingEntity) {
-            return this.castSwiftness(e.getPlayer(), ally, (LivingEntity) e.getRightClicked());
+            return this.castNightVision(e.getPlayer(), ally, (LivingEntity) e.getRightClicked());
         }
         
         return false;
     }
 
-    private boolean castSwiftness(Player caster, Ally ally, LivingEntity target) {
+    private boolean castNightVision(Player caster, Ally ally, LivingEntity target) {
         int duration = 20 * 10 * (ally.getLevel() + 1);
         
         if(ally.getPrimaryClass() == this.getClassType()) {
@@ -52,8 +53,8 @@ public class Swiftness extends AllySkill {
         
         int level = ally.getLevel() + 1;
         
-        if(!target.hasPotionEffect(PotionEffectType.SPEED)) {
-            target.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,duration,level));
+        if(!target.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+            target.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,duration,level));
             
             if(caster.equals(target)) {
                 this.send(caster,ally,"used "+this.getName()+" on you!");

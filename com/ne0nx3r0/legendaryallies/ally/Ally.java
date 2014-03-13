@@ -91,7 +91,8 @@ public class Ally {
             case CHICKEN: return AllyClassType.Support;
             case COW: return AllyClassType.Farmer;
             case CREEPER: return AllyClassType.Mage;
-            case ENDERMAN: return AllyClassType.Mage;
+            case ENDERMAN: return AllyClassType.Unknown;
+            case ENDERDRAGON: return AllyClassType.Unknown;
             case GHAST: return AllyClassType.Flying;
             case IRONGOLEM: return AllyClassType.Warrior;
             case MAGMACUBE: return AllyClassType.Mage;
@@ -124,13 +125,14 @@ public class Ally {
             case COW: return AllyClassType.Support;
             case CREEPER: return AllyClassType.Wild;
             case ENDERMAN: return AllyClassType.Carpenter;
+            case ENDERDRAGON: return AllyClassType.Flying;
             case GHAST: return AllyClassType.Nether;
             case IRONGOLEM: return AllyClassType.Support;
             case MAGMACUBE: return AllyClassType.Fire;
             case MUSHROOMCOW: return AllyClassType.Wild;
             case OCELOT: return AllyClassType.Farmer;
             case PIG: return AllyClassType.Farmer;
-            case PIGZOMBIE: return AllyClassType.Warrior;
+            case PIGZOMBIE: return AllyClassType.Undead;
             case SHEEP: return AllyClassType.Farmer;
             case SILVERFISH: return AllyClassType.Warrior;
             case SKELETON: return AllyClassType.Warrior;

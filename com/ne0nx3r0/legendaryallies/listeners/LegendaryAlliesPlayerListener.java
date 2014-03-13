@@ -31,12 +31,12 @@ public class LegendaryAlliesPlayerListener implements Listener {
                 e.setCancelled(true);
 
                 if(!plugin.allyManager.hasActiveAlly(e.getPlayer()) || plugin.allyManager.getActiveAlly(e.getPlayer().getName()) != ally) {
-                    e.getPlayer().sendMessage("Summoning "+ally.getName()+"!");
+                    e.getPlayer().sendMessage(ChatColor.GRAY+"Summoning "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"!");
                     
                     plugin.allyManager.summonAlly(e.getPlayer(),ally);
                 }
                 else if(e.getPlayer().isSneaking()) {
-                    e.getPlayer().sendMessage("Unsummoning "+ally.getName()+"!");
+                    e.getPlayer().sendMessage(ChatColor.GRAY+"Unsummoning "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"!");
                     
                     plugin.allyManager.unSummonAlly(e.getPlayer());
                 }
@@ -50,7 +50,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
 
                     if(remainingTime == 0) {
                         if(skill.onInteract(e,ally)) {
-                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), skill);
+                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
                         }
                     }
                     else {
@@ -65,7 +65,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     
                     if(remainingTime == 0) {
                         if(skill.onInteract(e,ally)) {
-                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), skill);
+                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally,  skill);
                         }
                     }
                     else {
@@ -97,7 +97,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
 
                         if(remainingTime == 0) {
                             if(skill.onDamageOther(e, ally)) { 
-                                plugin.skillsManager.setCooldown(player.getName(), skill);
+                                plugin.skillsManager.setCooldown(player.getName(), ally, skill);
                             }
                         }
                         else {
@@ -123,7 +123,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
                     
                     if(remainingTime == 0) {
-                        plugin.skillsManager.setCooldown(e.getPlayer().getName(), skill);
+                        plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
                         
                         skill.onInteractEntity(e, ally);
                     }
@@ -155,10 +155,9 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     Player player = ((Player) e.getWhoClicked()); 
                     
                     player.sendMessage(ally.getName()+" learned "+skill.getName()+"!");
-                    
-                    player.getInventory().addItem(plugin.allyManager.createSummoningItem(ally));
 
-                    e.setCurrentItem(null);
+                    plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
+                    
                     e.setCursor(null);
                 }
             }
@@ -172,10 +171,9 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     Player player = ((Player) e.getWhoClicked()); 
                     
                     player.sendMessage(ally.getName()+" learned "+skill.getName()+"!");
-                    
-                    player.getInventory().addItem(plugin.allyManager.createSummoningItem(ally));
 
-                    e.setCurrentItem(null);
+                    plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
+                    
                     e.setCursor(null);
                 }
             }

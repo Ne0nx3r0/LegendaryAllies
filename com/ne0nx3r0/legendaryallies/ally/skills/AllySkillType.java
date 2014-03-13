@@ -4,5 +4,8 @@ public enum AllySkillType {
     Fireball,
     Swiftness,
     Teleport,
-    Replenish
+    Replenish,
+    NightVision,
+    Heal,
+    PlaneShift
 }

@@ -44,7 +44,9 @@ public class AllyManager {
     }
     
     public Ally createAlly(PetType type) {
-        Ally ally = new Ally(this.cardinality++,type);
+        this.cardinality++;
+        
+        Ally ally = new Ally(this.cardinality,type);
         
         this.allies.put(ally.getAllyID(), ally);
         
@@ -60,11 +62,17 @@ public class AllyManager {
     public ItemStack createSummoningItem(Ally ally) {
         ItemStack is = new ItemStack(this.getAllyMaterial(ally.getPetType()));
         
-        ItemMeta meta = is.getItemMeta();
-        
-        meta.setDisplayName(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{
+        is.getItemMeta().setDisplayName(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{
             ally.getName()
         }));
+        
+        this.setAllyItemStackLoreValues(is, ally);
+        
+        return is;
+    }
+    
+    public void setAllyItemStackLoreValues(ItemStack is,Ally ally) {
+        ItemMeta meta = is.getItemMeta();
         
         List<String> lore = new ArrayList<>();
         
@@ -102,8 +110,6 @@ public class AllyManager {
         meta.setLore(lore);
         
         is.setItemMeta(meta);
-        
-        return is;
     }
     
     public Ally getAllyFromSummoningItem(ItemStack is) {
