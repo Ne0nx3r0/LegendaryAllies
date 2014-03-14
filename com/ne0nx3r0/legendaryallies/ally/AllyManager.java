@@ -235,4 +235,12 @@ public class AllyManager {
         
         return loadedAllies;
     }
+
+    public Ally getAlly(int allyId) {
+        return this.allies.get(allyId);
+    }
+
+    public void removeAlly(Ally ally) {
+        this.allies.remove(ally.getAllyID());
+    }
 }

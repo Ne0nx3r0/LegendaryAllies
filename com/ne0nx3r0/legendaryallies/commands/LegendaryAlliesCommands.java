@@ -245,27 +245,23 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 }
             }
             
-            PetType petType;
+            int allyId;
             
             try {
-                petType = PetType.valueOf(args[1].toUpperCase().replace("_",""));
+                allyId = Integer.parseInt(args[1]);
             }
             catch(Exception ex) {
-                cs.sendMessage(ChatColor.RED+"Invalid type!");
+                cs.sendMessage(ChatColor.RED+"Invalid ID!");
 
                 return true;
             }
             
-            Ally ally = plugin.allyManager.createAlly(petType);
+            Ally ally = plugin.allyManager.getAlly(allyId);
             
-            if(args.length > 3) {
-                String name = args[3];
-                
-                for(int i=4;i<args.length;i++) {
-                    name = name + " " + args[i];
-                }
-                
-                ally.setName(name);
+            if(ally == null) {
+                cs.sendMessage(ChatColor.RED+"Invalid ID!");
+
+                return true;
             }
             
             ItemStack is = plugin.allyManager.createSummoningItem(ally);
@@ -274,10 +270,10 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 player.getWorld().dropItemNaturally(player.getLocation(), is);
             }
 
-            player.sendMessage("You received a legendary ally! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
+            player.sendMessage("You received a legendary ally copy! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
             
             if(!cs.equals(player)) {
-                this.send(cs,"Create","Gave "+player.getName()+" a legendary ally! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
+                this.send(cs,"Create","Gave "+player.getName()+" a legendary ally copy! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
             }
         }
         
@@ -285,7 +281,43 @@ public class LegendaryAlliesCommands implements CommandExecutor {
     }
 
     private boolean _deleteAlly(CommandSender cs, String[] args) {
+        if(!this.hasCommandPermission(cs, "admin", "Manage legendary allies")) {
+            return true;
+        }
         
+        if(args.length < 2) {
+            this.send(cs,"Create Duplicate",
+                "Usage:",
+                "/la deleteAlly <ID>",
+                "/la da <ID>"
+            );
+        }
+        else {
+            int allyId;
+            
+            try {
+                allyId = Integer.parseInt(args[1]);
+            }
+            catch(Exception ex) {
+                cs.sendMessage(ChatColor.RED+"Invalid ID!");
+
+                return true;
+            }
+            
+            Ally ally = plugin.allyManager.getAlly(allyId);
+            
+            if(ally == null) {
+                cs.sendMessage(ChatColor.RED+"Invalid ID!");
+
+                return true;
+            }
+            
+            String allyName = ally.getName();
+            
+            plugin.allyManager.removeAlly(ally);
+            
+            cs.sendMessage("Deleted"+allyName+"(LMC#"+allyId+")");            
+        }
         
         return true;
     }
