@@ -41,20 +41,21 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     plugin.allyManager.unSummonAlly(e.getPlayer());
                 }
                 else if((e.getAction().equals(Action.RIGHT_CLICK_AIR) 
-                     || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
-                     && ally.getSecondarySkill() != null) {
-                    // activate alternate skill
-                    AllySkill skill = ally.getSecondarySkill();
+                    ||   e.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+                    if(ally.getSecondarySkill() != null) {
+                        // activate alternate skill
+                        AllySkill skill = ally.getSecondarySkill();
 
-                    long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
+                        long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
 
-                    if(remainingTime == 0) {
-                        if(skill.onInteract(e,ally)) {
-                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
+                        if(remainingTime == 0) {
+                            if(skill.onInteract(e,ally)) {
+                                plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
+                            }
                         }
-                    }
-                    else {
-                        e.getPlayer().sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
+                        else {
+                            e.getPlayer().sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
+                        }
                     }
                 }
                 else if(ally.getPrimarySkill() != null){
@@ -154,11 +155,13 @@ public class LegendaryAlliesPlayerListener implements Listener {
 
                     Player player = ((Player) e.getWhoClicked()); 
                     
-                    player.sendMessage(ally.getName()+" learned "+skill.getName()+"!");
+                    player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" learned "+ChatColor.WHITE+skill.getName()+ChatColor.GRAY+"!");
 
                     plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
                     
                     e.setCursor(null);
+                    
+                    e.setCancelled(true);
                 }
             }
             else if(e.getClick().isRightClick()) {
@@ -175,6 +178,8 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
                     
                     e.setCursor(null);
+                    
+                    e.setCancelled(true);
                 }
             }
         }

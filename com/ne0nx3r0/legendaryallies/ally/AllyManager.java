@@ -62,9 +62,13 @@ public class AllyManager {
     public ItemStack createSummoningItem(Ally ally) {
         ItemStack is = new ItemStack(this.getAllyMaterial(ally.getPetType()));
         
-        is.getItemMeta().setDisplayName(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{
+        ItemMeta meta = is.getItemMeta();
+        
+        meta.setDisplayName(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{
             ally.getName()
         }));
+
+        is.setItemMeta(meta);
         
         this.setAllyItemStackLoreValues(is, ally);
         

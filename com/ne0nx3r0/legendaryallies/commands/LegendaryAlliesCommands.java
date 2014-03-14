@@ -27,6 +27,12 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 case "createAlly":
                 case "ca":
                     return this._createAlly(cs,args);
+                case "createDuplicateAlly":
+                case "cda":
+                    return this._createDuplicateAlly(cs,args);
+                case "deleteAlly":
+                case "da":
+                    return this._deleteAlly(cs,args);
                 case "createSkillDisk":
                 case "csd":
                     return this._createSkillDisk(cs,args);
@@ -202,5 +208,85 @@ public class LegendaryAlliesCommands implements CommandExecutor {
         }
 
         cs.sendMessage("");
+    }
+
+    private boolean _createDuplicateAlly(CommandSender cs, String[] args) {
+        if(!this.hasCommandPermission(cs, "admin", "Manage legendary allies")) {
+            return true;
+        }
+        
+        // /la create <PETTYPE> [username]
+        if(args.length < 2) {
+            this.send(cs,"Create Duplicate",
+                "Usage:",
+                "/la createDuplicateAlly <ID> [username]",
+                "/la cda <ID> [username]"
+            );
+        }
+        else {
+            if(!(cs instanceof Player) && args.length < 2) {
+                cs.sendMessage(ChatColor.RED+"You must specify a player!");
+                
+                return true;
+            }
+            
+            Player player;
+            
+            if(args.length == 2) {
+                player = (Player) cs;
+            }
+            else {
+                player = Bukkit.getPlayer(args[2]);
+                
+                if(player == null) {
+                    cs.sendMessage(ChatColor.RED+"Invalid player!");
+
+                    return true;
+                }
+            }
+            
+            PetType petType;
+            
+            try {
+                petType = PetType.valueOf(args[1].toUpperCase().replace("_",""));
+            }
+            catch(Exception ex) {
+                cs.sendMessage(ChatColor.RED+"Invalid type!");
+
+                return true;
+            }
+            
+            Ally ally = plugin.allyManager.createAlly(petType);
+            
+            if(args.length > 3) {
+                String name = args[3];
+                
+                for(int i=4;i<args.length;i++) {
+                    name = name + " " + args[i];
+                }
+                
+                ally.setName(name);
+            }
+            
+            ItemStack is = plugin.allyManager.createSummoningItem(ally);
+
+            if(!player.getInventory().addItem(is).isEmpty()) {
+                player.getWorld().dropItemNaturally(player.getLocation(), is);
+            }
+
+            player.sendMessage("You received a legendary ally! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
+            
+            if(!cs.equals(player)) {
+                this.send(cs,"Create","Gave "+player.getName()+" a legendary ally! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
+            }
+        }
+        
+        return true;
+    }
+
+    private boolean _deleteAlly(CommandSender cs, String[] args) {
+        
+        
+        return true;
     }
 }

@@ -10,7 +10,7 @@ public class Ally {
     private String name = "Unnamed";
     private int xp = 0;
     private int hp = 1;
-    private int attackPower = 1;
+    private int attackPower = 0;
     private int defense = 0; 
     private AllySkill primarySkill;   
     private AllySkill secondarySkill;
@@ -148,20 +148,21 @@ public class Ally {
         }
     }
 
-    public AllySkill getSecondarySkill() {
-        return this.secondarySkill;
-    }
-
-    public AllySkill getPrimarySkill() {
-       return this.primarySkill;
-    }
 
     public void setSecondarySkill(AllySkill skill) {
         this.secondarySkill = skill;
     }
+    
+    public AllySkill getSecondarySkill() {
+        return this.secondarySkill;
+    }
 
     public void setPrimarySkill(AllySkill skill) {
         this.primarySkill = skill;
+    }
+    
+    public AllySkill getPrimarySkill() {
+       return this.primarySkill;
     }
 
     public int getLevel() {

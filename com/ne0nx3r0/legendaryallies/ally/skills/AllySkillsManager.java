@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -133,7 +132,7 @@ public class AllySkillsManager {
         List<String> lore = new ArrayList<>();
         
         lore.add(String.format(SKILL_LORE_NAME,new Object[]{
-            skill.getName()
+            skill.getType().name()
         }));
         
         for(String descriptionLine : SKILL_LORE_DESCRIPTION.split("\n")) {
