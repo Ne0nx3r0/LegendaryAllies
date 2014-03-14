@@ -14,5 +14,6 @@ public enum AllyClassType {
     Farmer, 
     Wild, 
     Flying, 
-    Cold
+    Cold,
+    Void
 }

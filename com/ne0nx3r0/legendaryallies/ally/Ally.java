@@ -91,8 +91,8 @@ public class Ally {
             case CHICKEN: return AllyClassType.Support;
             case COW: return AllyClassType.Farmer;
             case CREEPER: return AllyClassType.Mage;
-            case ENDERMAN: return AllyClassType.Unknown;
-            case ENDERDRAGON: return AllyClassType.Unknown;
+            case ENDERMAN: return AllyClassType.Void;
+            case ENDERDRAGON: return AllyClassType.Void;
             case GHAST: return AllyClassType.Flying;
             case IRONGOLEM: return AllyClassType.Warrior;
             case MAGMACUBE: return AllyClassType.Mage;
