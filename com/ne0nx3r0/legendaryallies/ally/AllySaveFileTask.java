@@ -7,6 +7,7 @@
 package com.ne0nx3r0.legendaryallies.ally;
 
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
+import io.github.dsh105.echopet.entity.PetData;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +46,17 @@ public class AllySaveFileTask implements Runnable {
             if(ally.getSecondarySkill() != null) {
                 tempAlly.put("secondarySkill",ally.getSecondarySkill().getType().toString());
             }
-
+            
+            if(ally.getPetData() != null) {
+                ArrayList<String> tempData = new ArrayList<>();
+                
+                for(PetData petData : ally.getPetData()) {
+                    tempData.add(petData.name());
+                }
+                
+                tempAlly.put("petData",tempData);
+            }
+            
             tempAllies.add(tempAlly);
         }
 

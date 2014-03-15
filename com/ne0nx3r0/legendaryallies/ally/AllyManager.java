@@ -4,6 +4,7 @@ import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkillType;
 import io.github.dsh105.echopet.entity.Pet;
+import io.github.dsh105.echopet.entity.PetData;
 import io.github.dsh105.echopet.entity.PetType;
 import java.io.File;
 import java.util.ArrayList;
@@ -175,6 +176,14 @@ public class AllyManager {
 
         pet.setPetName(ally.getName());
         
+        for(PetData pd : pet.getPetData()) {
+            plugin.petAPI.removeData(pet, pd);
+        }
+        
+        for(PetData pd : ally.getPetData()) {
+            plugin.petAPI.addData(pet, pd);
+        }
+        
         ally.setPet(pet);
 
         this.activeAllies.put(player.getName(), ally);
@@ -225,7 +234,17 @@ public class AllyManager {
                     secondarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("secondarySkill")));
                 }
                 
-                loadedAllies.put(allyId,new Ally(allyId,petType,name,xp,hp,attackPower,defense,primarySkill,secondarySkill));
+                ArrayList<PetData> petData = null;
+                if(tempAlly.containsKey("petData")) {
+                    ArrayList<String> tempPetData = (ArrayList<String>) tempAlly.get("petData");
+                    petData = new ArrayList<>();
+                    
+                    for(String sPetData : tempPetData) {
+                        petData.add(PetData.valueOf(sPetData));
+                    }
+                }
+
+                loadedAllies.put(allyId,new Ally(allyId,petType,name,xp,hp,attackPower,defense,primarySkill,secondarySkill,petData));
             }
         }
         

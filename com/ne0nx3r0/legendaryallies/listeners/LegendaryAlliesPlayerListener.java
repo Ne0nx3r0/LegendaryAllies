@@ -3,6 +3,8 @@ package com.ne0nx3r0.legendaryallies.listeners;
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
+import io.github.dsh105.echopet.entity.PetData;
+import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,6 +39,9 @@ public class LegendaryAlliesPlayerListener implements Listener {
                 }
                 else if(e.getPlayer().isSneaking()) {
                     e.getPlayer().sendMessage(ChatColor.GRAY+"Unsummoning "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"!");
+                    
+                    // Save pet data
+                    ally.setPetData(ally.getPet().getPetData());
                     
                     plugin.allyManager.unSummonAlly(e.getPlayer());
                 }

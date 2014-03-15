@@ -2,7 +2,9 @@ package com.ne0nx3r0.legendaryallies.ally;
 
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import io.github.dsh105.echopet.entity.Pet;
+import io.github.dsh105.echopet.entity.PetData;
 import io.github.dsh105.echopet.entity.PetType;
+import java.util.ArrayList;
 
 public class Ally {
     private final int allyId;
@@ -15,6 +17,7 @@ public class Ally {
     private AllySkill primarySkill;   
     private AllySkill secondarySkill;
     private Pet pet;
+    private ArrayList<PetData> petData;
     
     public Ally(int id,PetType petType) {
         this.allyId = id;
@@ -22,7 +25,7 @@ public class Ally {
     }
 
     // Generally used to load a saved ally to memory
-    Ally(int allyId, PetType petType, String name, int xp,int hp,int attackPower,int defense,AllySkill primarySkill,AllySkill secondarySkill) {
+    Ally(int allyId, PetType petType, String name, int xp,int hp,int attackPower,int defense,AllySkill primarySkill,AllySkill secondarySkill, ArrayList<PetData> petData) {
         this.allyId = allyId;
         this.petType = petType;
         this.name = name;
@@ -32,6 +35,7 @@ public class Ally {
         this.defense = defense;
         this.primarySkill = primarySkill;
         this.secondarySkill = secondarySkill;
+        this.petData = petData;
     }
 
     public int getAllyID() {
@@ -177,5 +181,13 @@ public class Ally {
     
     public Pet getPet() {
         return this.pet;
+    }
+
+    public ArrayList<PetData> getPetData() {
+        return this.petData;
+    }
+    
+    public void setPetData(ArrayList<PetData> petData) {
+        this.petData = petData;
     }
 }
