@@ -11,13 +11,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class NightVision extends AllySkill {
-    public NightVision() {
+    public NightVision(int dropProbability) {
         super(
                 AllySkillType.NightVision,
                 AllyClassType.Wild,
                 "Night Vision",
                 "Allows target or self to see in the dark",
-                60
+                60,
+                dropProbability
         );
     }
 

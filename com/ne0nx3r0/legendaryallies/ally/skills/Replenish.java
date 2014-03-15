@@ -8,13 +8,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Replenish extends AllySkill {
-    public Replenish() {
+    public Replenish(int dropProbability) {
         super(
             AllySkillType.Replenish,
             AllyClassType.Support,
             "Replenish",
             "Self or targetted player is\ninstantly satiated.",
-            45
+            45,
+            dropProbability
         );
     }
 

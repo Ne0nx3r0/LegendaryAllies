@@ -11,13 +11,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 public class Fireball extends AllySkill {
-    public Fireball() {
+    public Fireball(int dropProbability) {
         super(
                 AllySkillType.Fireball,
                 AllyClassType.Fire,
                 "Fireball",
                 "Ally shoots a fireball at the target",
-                10
+                10,
+                dropProbability
         );
     }
 

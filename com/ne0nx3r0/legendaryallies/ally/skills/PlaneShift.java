@@ -10,12 +10,13 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlaneShift extends AllySkill {
-    public PlaneShift() {
+    public PlaneShift(int dropProbability) {
         super(
                 AllySkillType.PlaneShift,
                 AllyClassType.Nether,
                 "Plane Shift","Shift into or from The Nether",
-                20);
+                20,
+                dropProbability);
     }
 
     @Override
@@ -43,14 +44,14 @@ public class PlaneShift extends AllySkill {
             teleportTo.setX(teleportTo.getBlockX()*8);
             teleportTo.setZ(teleportTo.getBlockZ()*8);
             
-            this.send(player,ally,"Shifted you out of The Nether!");
+            this.send(player,ally,"shifted you out of The Nether!");
         }
         else {
             teleportTo.setWorld(Bukkit.getWorld(sCurrentWorld+"_nether"));
             teleportTo.setX(teleportTo.getBlockX()/8);
             teleportTo.setZ(teleportTo.getBlockZ()/8);
             
-            this.send(player,ally,"Shifted you into The Nether!");
+            this.send(player,ally,"shifted you into The Nether!");
         }
         
         player.teleport(teleportTo);

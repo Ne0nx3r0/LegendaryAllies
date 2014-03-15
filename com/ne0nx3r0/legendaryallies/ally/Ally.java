@@ -112,6 +112,7 @@ public class Ally {
             case WITHER: return AllyClassType.Undead;
             case WOLF: return AllyClassType.Warrior;
             case ZOMBIE: return AllyClassType.Warrior;
+            case HORSE: return AllyClassType.Wild;
         }
     }
 
@@ -145,6 +146,7 @@ public class Ally {
             case WITHER: return AllyClassType.Mage;
             case WOLF: return AllyClassType.Wild;
             case ZOMBIE: return AllyClassType.Undead;   
+            case HORSE: return AllyClassType.Support;
         }
     }
 

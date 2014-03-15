@@ -1,3 +1,5 @@
+
+
 package com.ne0nx3r0.legendaryallies.ally.skills;
 
 import com.ne0nx3r0.legendaryallies.ally.Ally;
@@ -10,12 +12,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Teleport extends AllySkill {
-    public Teleport() {
+    public Teleport(int dropProbability) {
         super(
-                AllySkillType.Teleport,
-                AllyClassType.Mage,
-                "Teleport","Teleport to a target location",
-                10);
+            AllySkillType.Teleport,
+            AllyClassType.Mage,
+            "Teleport","Teleport to a target location",
+            10,
+            dropProbability
+        );
     }
 
     @Override

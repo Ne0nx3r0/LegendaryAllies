@@ -10,13 +10,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Heal extends AllySkill {
-    public Heal() {
+    public Heal(int dropProbability) {
         super(
             AllySkillType.Heal,
             AllyClassType.Support,
             "Heal",
             "Self or targetted creature is\n instantly healed. Healing has \n a negative effect on undead\nharming them instead",
-            30
+            30,
+                dropProbability
         );
     }
 

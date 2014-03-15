@@ -23,13 +23,15 @@ public class AllySkillsManager {
         this.plugin = plugin;
         
         this.skills = new EnumMap<>(AllySkillType.class);
-        this.addSkill(new Fireball());
-        this.addSkill(new Heal());
-        this.addSkill(new NightVision());
-        this.addSkill(new PlaneShift());
-        this.addSkill(new Replenish());
-        this.addSkill(new Swiftness());
-        this.addSkill(new Teleport());
+        this.addSkill(new Fireball(4));
+        this.addSkill(new Heal(5));
+        this.addSkill(new NightVision(8));
+        this.addSkill(new PlaneShift(1));
+        this.addSkill(new Replenish(4));
+        this.addSkill(new Swiftness(7));
+        this.addSkill(new Teleport(4));
+        this.addSkill(new VoidSight(3));
+        this.addSkill(new VoidWall(1));
         
         this.cooldowns = new HashMap<>();
         

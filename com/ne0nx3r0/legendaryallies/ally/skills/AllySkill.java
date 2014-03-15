@@ -14,13 +14,15 @@ public class AllySkill {
     private final String description;
     final int cooldown;
     private final AllyClassType classType;
+    private final int dropProbability;
 
-    public AllySkill(AllySkillType skillType,AllyClassType classType,String name,String description,int cooldownSeconds) {
+    public AllySkill(AllySkillType skillType,AllyClassType classType,String name,String description,int cooldownSeconds,int dropProbability) {
         this.skillType = skillType;
         this.classType = classType;
         this.name = name;
         this.description = description;
         this.cooldown = cooldownSeconds;
+        this.dropProbability = dropProbability;
     }
     
     public String getName() {
@@ -60,5 +62,9 @@ public class AllySkill {
     
     void sendError(Player player,Ally ally,String message) {
         this.send(player,ally,ChatColor.RED+message);
+    }
+    
+    public int getDropProbability() {
+        return this.dropProbability;
     }
 }

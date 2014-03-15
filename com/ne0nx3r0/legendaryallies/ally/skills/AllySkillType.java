@@ -7,5 +7,7 @@ public enum AllySkillType {
     Replenish,
     NightVision,
     Heal,
-    PlaneShift
+    PlaneShift,
+    VoidSight,
+    VoidWall
 }

@@ -146,41 +146,34 @@ public class LegendaryAlliesPlayerListener implements Listener {
             && !skill.getClassType().equals(ally.getSecondaryClass())) {
                 ((Player) e.getWhoClicked()).sendMessage(ChatColor.RED+ally.getName()+" cannot learn "+skill.getName()+"!");
             }
-            else if(e.getClick().isLeftClick()) {
-                if(ally.getPrimarySkill() != null) {
-                    ((Player) e.getWhoClicked()).sendMessage(ChatColor.RED+ally.getName()+" already has a primary skill!");
-                }
-                else {                    
-                    ally.setPrimarySkill(skill);
+            else if(ally.getPrimarySkill() == null) {               
+                ally.setPrimarySkill(skill);
 
-                    Player player = ((Player) e.getWhoClicked()); 
-                    
-                    player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" learned "+ChatColor.WHITE+skill.getName()+ChatColor.GRAY+"!");
+                Player player = ((Player) e.getWhoClicked()); 
 
-                    plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
-                    
-                    e.setCursor(null);
-                    
-                    e.setCancelled(true);
-                }
+                player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" learned "+ChatColor.WHITE+skill.getName()+ChatColor.GRAY+"! (left click to use)");
+
+                plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
+
+                e.setCursor(null);
+
+                e.setCancelled(true);
             }
-            else if(e.getClick().isRightClick()) {
-                if(ally.getSecondarySkill() != null) {
-                    ((Player) e.getWhoClicked()).sendMessage(ChatColor.RED+ally.getName()+" already has a secondary skill!");
-                }
-                else {
-                    ally.setSecondarySkill(skill);
+            else if(ally.getSecondarySkill() == null) {
+                ally.setSecondarySkill(skill);
 
-                    Player player = ((Player) e.getWhoClicked()); 
-                    
-                    player.sendMessage(ally.getName()+" learned "+skill.getName()+"!");
+                Player player = ((Player) e.getWhoClicked()); 
 
-                    plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
-                    
-                    e.setCursor(null);
-                    
-                    e.setCancelled(true);
-                }
+                player.sendMessage(ally.getName()+" learned "+skill.getName()+"! (right click to use)");
+
+                plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
+
+                e.setCursor(null);
+
+                e.setCancelled(true);
+            }
+            else {
+                ((Player) e.getWhoClicked()).sendMessage(ChatColor.RED+ally.getName()+" cannot learn anymore skills!");
             }
         }
     }

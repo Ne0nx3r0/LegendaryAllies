@@ -5,6 +5,7 @@ import com.ne0nx3r0.legendaryallies.ally.skills.AllySkillsManager;
 import com.ne0nx3r0.legendaryallies.commands.LegendaryAlliesCommands;
 import com.ne0nx3r0.legendaryallies.listeners.LegendaryAlliesPlayerListener;
 import com.ne0nx3r0.legendaryallies.listeners.LegendaryAlliesPetListener;
+import com.ne0nx3r0.legendaryallies.loot.LootManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import io.github.dsh105.echopet.api.EchoPetAPI;
 import org.bukkit.Bukkit;
@@ -14,14 +15,17 @@ public class LegendaryAlliesPlugin extends JavaPlugin {
     public EchoPetAPI petAPI;
     public AllyManager allyManager;
     public AllySkillsManager skillsManager;
+    private LootManager lootManager;
     
     @Override
     public void onEnable() {
         this.petAPI = EchoPetAPI.getAPI();
-
+        
         this.skillsManager = new AllySkillsManager(this);
         
         this.allyManager = new AllyManager(this);
+
+        this.lootManager = new LootManager(this);
         
         this.getServer().getPluginManager().registerEvents(new LegendaryAlliesPetListener(this), this);
         this.getServer().getPluginManager().registerEvents(new LegendaryAlliesPlayerListener(this), this);

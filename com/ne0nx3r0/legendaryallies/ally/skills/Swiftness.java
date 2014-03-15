@@ -11,13 +11,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Swiftness extends AllySkill {
-    public Swiftness() {
+    public Swiftness(int dropProbability) {
         super(
-                AllySkillType.Swiftness,
-                AllyClassType.Wild,
-                "Swiftness",
-                "Ally moves faster, applies to riding as well",
-                30);
+            AllySkillType.Swiftness,
+            AllyClassType.Wild,
+            "Swiftness",
+            "Ally moves faster, applies to riding as well",
+            30,
+            dropProbability
+        );
     }
 
     @Override

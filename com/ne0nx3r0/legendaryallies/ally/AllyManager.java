@@ -60,7 +60,7 @@ public class AllyManager {
     private final String SUMMONER_LORE_SKILLS_FORMAT  = ChatColor.GRAY+"Skills: "+ChatColor.WHITE+"%s"+ChatColor.GRAY+", "+ChatColor.WHITE+"%s";
     
     public ItemStack createSummoningItem(Ally ally) {
-        ItemStack is = new ItemStack(this.getAllyMaterial(ally.getPetType()));
+        ItemStack is = new ItemStack(this.getAllyMaterial(ally.getPetType()),1,(short) 0,this.getEggId(ally.getPetType()));
         
         ItemMeta meta = is.getItemMeta();
         
@@ -242,5 +242,68 @@ public class AllyManager {
 
     public void removeAlly(Ally ally) {
         this.allies.remove(ally.getAllyID());
+    }
+    
+    public byte getEggId(PetType type) {
+        switch(type) {
+            default: 
+                return 0;
+            case BAT: 
+                return 65;
+            case BLAZE: 
+                return 61;
+            case CAVESPIDER: 
+                return 59;
+            case CHICKEN: 
+                return 93;
+            case COW: 
+                return 92;
+            case CREEPER: 
+                return 50;
+            case ENDERMAN: 
+                return 58;
+            case ENDERDRAGON: 
+                return 58;
+            case GHAST: 
+                return 56;
+            case IRONGOLEM: 
+                return 95;
+            case MAGMACUBE: 
+                return 62;
+            case MUSHROOMCOW: 
+                return 96;
+            case OCELOT: 
+                return 98;
+            case PIG: 
+                return 90;
+            case PIGZOMBIE: 
+                return 57;
+            case SHEEP: 
+                return 91;
+            case SILVERFISH: 
+                return 60;
+            case SKELETON: 
+                return 51;
+            case SLIME: 
+                return 55;
+            case SNOWMAN: 
+                return 56;
+            case SPIDER: 
+                return 52;
+            case SQUID: 
+                return 94;
+            case VILLAGER: 
+                return 120;
+            case WITCH: 
+                return 66;
+            case WITHER: 
+                return 58;
+            case WOLF: 
+                return 95;
+            case ZOMBIE: 
+                return 54;
+            case HORSE:
+                return 100;
+        }
     }
 }
