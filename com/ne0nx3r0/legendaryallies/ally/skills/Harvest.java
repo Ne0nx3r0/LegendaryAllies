@@ -4,6 +4,7 @@ package com.ne0nx3r0.legendaryallies.ally.skills;
 
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.AllyClassType;
+import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,9 +60,9 @@ public class Harvest extends AllySkill {
                         
                         ItemStack[] is = this.getMinedResource(block);
 
-                        if(is != null && !player.getInventory().addItem(is).isEmpty()) {                            
+                        if(is != null) {                            
                             for(ItemStack is1 : is) {
-                                player.getWorld().dropItemNaturally(player.getLocation(), is1);
+                                player.getWorld().dropItemNaturally(block.getLocation(), is1);
                             }
                         }
                         
@@ -77,11 +78,19 @@ public class Harvest extends AllySkill {
     }
 
     private boolean isFarmResource(Block block) {
-        if(block.getType() == Material.CROPS) {
-            if(block.getData() == (byte) 6 || block.getData() == (byte) 7) {
-
-                return true;
-            }
+        switch(block.getType()) {
+            case CROPS:
+                if(block.getData() == 7) {
+                    return true;
+                }
+            case CARROT:
+                if(block.getData() == 7) {
+                    return true;
+                }
+            case POTATO:
+                if(block.getData() == 7) {
+                    return true;
+                }
         }
         
         return false;
@@ -95,6 +104,14 @@ public class Harvest extends AllySkill {
                 return new ItemStack[]{
                     new ItemStack(Material.WHEAT),
                     new ItemStack(Material.SEEDS)
+                };
+            case POTATO:
+                return new ItemStack[]{
+                    new ItemStack(Material.POTATO,new Random().nextInt(3)+1)
+                };
+            case CARROT:
+                return new ItemStack[]{
+                    new ItemStack(Material.CARROT,new Random().nextInt(3)+1)
                 };
         }
     }
