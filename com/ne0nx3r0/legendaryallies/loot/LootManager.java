@@ -1,9 +1,12 @@
 package com.ne0nx3r0.legendaryallies.loot;
 
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
+import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.logging.Level;
 import lib.PatPeter.SQLibrary.SQLite;
 import org.bukkit.Location;
@@ -11,6 +14,7 @@ import org.bukkit.Location;
 public class LootManager {
     private final LegendaryAlliesPlugin plugin;
     private final SQLite sqlite;
+    private int skillsTotalProbability;
 
     public LootManager(LegendaryAlliesPlugin plugin) {
         this.plugin = plugin;
@@ -44,6 +48,30 @@ public class LootManager {
 
             plugin.getLogger().log(Level.INFO, "megachunks table created");
         }
+        
+        // Probability test
+        this.skillsTotalProbability = 0;
+        
+        for (AllySkill skill : plugin.skillsManager.getAllSkills()) {
+            this.skillsTotalProbability += skill.getDropProbability();
+        }
+    }
+    
+    public AllySkill getWeightedRandomSkill() {
+        
+        int p = new Random().nextInt(this.skillsTotalProbability+1);
+        int cumulativeProbability = 0;
+        
+        for (AllySkill skill : plugin.skillsManager.getAllSkills()) {
+            
+            cumulativeProbability += skill.getDropProbability();
+            
+            if (p <= cumulativeProbability) {
+                return skill;
+            }
+        }
+        
+        return null;
     }
     
     public boolean getHasMegaChunkDroppedLoot(Location location) {        

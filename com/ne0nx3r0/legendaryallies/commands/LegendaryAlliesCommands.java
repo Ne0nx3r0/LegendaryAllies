@@ -30,8 +30,8 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 case "createDuplicateAlly":
                 case "cda":
                     return this._createDuplicateAlly(cs,args);
-                case "deleteAlly":
-                case "da":
+                case "removeAlly":
+                case "aa":
                     return this._deleteAlly(cs,args);
                 case "createSkillDisk":
                 case "csd":
@@ -43,7 +43,7 @@ public class LegendaryAlliesCommands implements CommandExecutor {
     }
 
     private boolean _createAlly(CommandSender cs, String[] args) {
-        if(!this.hasCommandPermission(cs, "admin", "Manage legendary allies")) {
+        if(cs instanceof Player && !this.hasCommandPermission(cs, "admin", "Manage legendary allies")) {
             return true;
         }
         
@@ -99,6 +99,9 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 }
                 
                 ally.setName(name);
+            }
+            else {
+                ally.setName("Unnamed "+ally.getPetType().name().toLowerCase());
             }
             
             ItemStack is = plugin.allyManager.createSummoningItem(ally);
@@ -286,10 +289,10 @@ public class LegendaryAlliesCommands implements CommandExecutor {
         }
         
         if(args.length < 2) {
-            this.send(cs,"Create Duplicate",
+            this.send(cs,"Remove Ally",
                 "Usage:",
-                "/la deleteAlly <ID>",
-                "/la da <ID>"
+                "/la removeAlly <ID>",
+                "/la ra <ID>"
             );
         }
         else {
@@ -316,7 +319,7 @@ public class LegendaryAlliesCommands implements CommandExecutor {
             
             plugin.allyManager.removeAlly(ally);
             
-            cs.sendMessage("Deleted"+allyName+"(LMC#"+allyId+")");            
+            cs.sendMessage("Deleted "+allyName+" (LMC#"+allyId+")");  
         }
         
         return true;

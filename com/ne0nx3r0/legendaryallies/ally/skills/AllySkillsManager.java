@@ -29,9 +29,13 @@ public class AllySkillsManager {
         this.addSkill(new PlaneShift(1));
         this.addSkill(new Replenish(4));
         this.addSkill(new Swiftness(7));
-        this.addSkill(new Teleport(4));
+        this.addSkill(new Blink(4));
         this.addSkill(new VoidSight(3));
         this.addSkill(new VoidWall(1));
+        this.addSkill(new Twilight(1));
+        this.addSkill(new Midnight(3));
+        this.addSkill(new Harvest(7));
+        
         
         this.cooldowns = new HashMap<>();
         
@@ -198,5 +202,9 @@ public class AllySkillsManager {
         }
         
         return null;
+    }
+
+    public Iterable<AllySkill> getAllSkills() {
+        return this.skills.values();
     }
 }

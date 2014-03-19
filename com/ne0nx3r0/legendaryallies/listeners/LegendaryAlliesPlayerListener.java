@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class LegendaryAlliesPlayerListener implements Listener {
     private final LegendaryAlliesPlugin plugin;
@@ -34,6 +35,16 @@ public class LegendaryAlliesPlayerListener implements Listener {
 
                 if(!plugin.allyManager.hasActiveAlly(e.getPlayer()) || plugin.allyManager.getActiveAlly(e.getPlayer().getName()) != ally) {
                     e.getPlayer().sendMessage(ChatColor.GRAY+"Summoning "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"!");
+                    
+                    if(plugin.allyManager.itemStackHasBeenRenamed(e.getItem(), ally)) {
+                        String newName = ChatColor.stripColor(e.getItem().getItemMeta().getDisplayName());
+                        
+                        e.getPlayer().sendMessage(ChatColor.GRAY+"Updating "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"'s name to "+ChatColor.GREEN+newName+"!");
+                        
+                        ally.setName(newName);
+
+                        plugin.allyManager.setAllyItemMetaData(e.getItem(), ally);
+                    }
                     
                     plugin.allyManager.summonAlly(e.getPlayer(),ally);
                 }
@@ -158,7 +169,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
 
                 player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" learned "+ChatColor.WHITE+skill.getName()+ChatColor.GRAY+"! (left click to use)");
 
-                plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
+                plugin.allyManager.setAllyItemMetaData(e.getCurrentItem(), ally);
 
                 e.setCursor(null);
 
@@ -171,7 +182,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
 
                 player.sendMessage(ally.getName()+" learned "+skill.getName()+"! (right click to use)");
 
-                plugin.allyManager.setAllyItemStackLoreValues(e.getCurrentItem(), ally);
+                plugin.allyManager.setAllyItemMetaData(e.getCurrentItem(), ally);
 
                 e.setCursor(null);
 

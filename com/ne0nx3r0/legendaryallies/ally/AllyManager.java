@@ -62,22 +62,22 @@ public class AllyManager {
     
     public ItemStack createSummoningItem(Ally ally) {
         ItemStack is = new ItemStack(this.getAllyMaterial(ally.getPetType()),1,(short) 0,this.getEggId(ally.getPetType()));
-        
-        ItemMeta meta = is.getItemMeta();
-        
-        meta.setDisplayName(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{
-            ally.getName()
-        }));
-
-        is.setItemMeta(meta);
-        
-        this.setAllyItemStackLoreValues(is, ally);
+ 
+        this.setAllyItemMetaData(is, ally);
         
         return is;
     }
     
-    public void setAllyItemStackLoreValues(ItemStack is,Ally ally) {
+    public boolean itemStackHasBeenRenamed(ItemStack is,Ally ally) {
+        return !is.getItemMeta().getDisplayName().equals(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{ally.getName()}));
+    }
+    
+    public void setAllyItemMetaData(ItemStack is,Ally ally) {
         ItemMeta meta = is.getItemMeta();
+
+        meta.setDisplayName(String.format(SUMMONER_DISPLAY_FORMAT,new Object[]{
+            ally.getName()
+        }));
         
         List<String> lore = new ArrayList<>();
         
@@ -95,22 +95,10 @@ public class AllyManager {
             ally.getSecondaryClass()
         }));
         
-        if(ally.getSecondarySkill() != null) { 
-            lore.add(String.format(SUMMONER_LORE_SKILLS_FORMAT,new Object[]{
-                ally.getPrimarySkill().getName(),
-                ally.getSecondarySkill().getName()
-            }));
-        }
-        else if(ally.getPrimarySkill() != null) { 
-            lore.add(String.format(SUMMONER_LORE_SKILLS_FORMAT,new Object[]{
-                ally.getPrimarySkill().getName(),"<empty>"
-            }));
-        }
-        else { 
-            lore.add(String.format(SUMMONER_LORE_SKILLS_FORMAT,new Object[]{
-                "<empty>","<empty>"
-            }));
-        }
+        lore.add(String.format(SUMMONER_LORE_SKILLS_FORMAT,new Object[]{
+            ally.getPrimarySkill() != null ? ally.getPrimarySkill().getName() : "<empty>",
+            ally.getSecondarySkill() != null ? ally.getSecondarySkill().getName() : "<empty>",
+        }));
         
         meta.setLore(lore);
         
@@ -176,12 +164,15 @@ public class AllyManager {
 
         pet.setPetName(ally.getName());
         
-        for(PetData pd : pet.getPetData()) {
-            plugin.petAPI.removeData(pet, pd);
-        }
-        
-        for(PetData pd : ally.getPetData()) {
-            plugin.petAPI.addData(pet, pd);
+        if(ally.getPetData() != null) {
+            for(PetData pd : ally.getPetData()) {
+                plugin.petAPI.addData(pet, pd);
+            }
+
+            // in case any ordering messed things up
+            for(PetData pd : ally.getPetData()) {
+                plugin.petAPI.addData(pet, pd);
+            }
         }
         
         ally.setPet(pet);
@@ -196,7 +187,9 @@ public class AllyManager {
     public void unSummonAlly(Player player) {
         Ally ally = this.activeAllies.remove(player.getName());
         
-        ally.setPet(null);
+        if(ally != null) {
+            ally.setPet(null);
+        }
         
         plugin.petAPI.removePet(player, false, true);        
     }
@@ -224,14 +217,25 @@ public class AllyManager {
                 int attackPower = (int) tempAlly.get("attackPower");
                 int defense = (int) tempAlly.get("defense");
                 
-                AllySkill primarySkill = null;
-                if(tempAlly.containsKey("primarySkill")) {
-                    primarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("primarySkill")));
+                AllySkill primarySkill = null; 
+                try {
+                    if(tempAlly.containsKey("primarySkill")) {
+                        primarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("primarySkill")));
+                    }
+                }
+                catch(Exception e) {
+                    System.out.println("Invalid ally skill:"+(String) tempAlly.get("primarySkill"));
                 }
                 
                 AllySkill secondarySkill = null;
-                if(tempAlly.containsKey("secondarySkill")) {
-                    secondarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("secondarySkill")));
+                
+                try {
+                    if(tempAlly.containsKey("secondarySkill")) {
+                        secondarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("secondarySkill")));
+                    }
+                }
+                catch(Exception e) {
+                    System.out.println("Invalid ally skill:"+(String) tempAlly.get("secondarySkill"));
                 }
                 
                 ArrayList<PetData> petData = null;

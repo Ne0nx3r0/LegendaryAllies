@@ -2,6 +2,7 @@ package com.ne0nx3r0.legendaryallies.ally.skills;
 
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.AllyClassType;
+import io.github.dsh105.echopet.entity.CraftPet;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -30,7 +31,10 @@ public class Fireball extends AllySkill {
 
             return this.shootFireballFromTo(e.getPlayer(), ally, sender, receiver);
         }
-        return false;
+
+        int distance = ally.getPrimaryClass() == this.getClassType() ? 40 : 20;
+        
+        return this.shootFireballFromTo(e.getPlayer(), ally, ally.getPet().getLocation(),e.getPlayer().getTargetBlock(null, distance).getLocation());
     }
     
     @Override
@@ -50,14 +54,18 @@ public class Fireball extends AllySkill {
     }
     
     public boolean shootFireballFromTo(Player pOwner,Ally ally,Location sender, Location receiver) {
-        Location lStart = sender.add(sender.subtract(receiver).multiply(0.3));
+
+        Vector direction = receiver.toVector().subtract(sender.toVector()).normalize();
+
+        CraftPet allyShooter = ally.getPet().getEntityPet().getBukkitEntity();
+
+        Projectile proj = allyShooter.launchProjectile(org.bukkit.entity.Fireball.class);
         
-        Vector direction = lStart.toVector().subtract(receiver.toVector()).normalize();
+        proj.setShooter(allyShooter);
         
-        Projectile projectile;
-        projectile = (Projectile) sender.getWorld().spawn(lStart, org.bukkit.entity.Fireball.class);
-        projectile.setShooter(ally.getPet().getCraftPet());
-        projectile.setVelocity(direction);
+        proj.setBounce(false);
+        
+        proj.setVelocity(direction);
         
         //TODO: Add entity name if applicable
         this.send(pOwner,ally,"shot a fireball!");

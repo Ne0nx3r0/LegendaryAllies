@@ -3,11 +3,14 @@ package com.ne0nx3r0.legendaryallies.ally.skills;
 public enum AllySkillType {
     Fireball,
     Swiftness,
-    Teleport,
+    Blink,
     Replenish,
     NightVision,
     Heal,
     PlaneShift,
     VoidSight,
-    VoidWall
+    VoidWall,
+    Twilight,
+    Midnight,
+    Harvest
 }

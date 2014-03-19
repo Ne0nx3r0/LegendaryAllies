@@ -11,12 +11,12 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class Teleport extends AllySkill {
-    public Teleport(int dropProbability) {
+public class Blink extends AllySkill {
+    public Blink(int dropProbability) {
         super(
-            AllySkillType.Teleport,
+            AllySkillType.Blink,
             AllyClassType.Mage,
-            "Teleport","Teleport to a target location",
+            "Blink","Blink to a target location",
             10,
             dropProbability
         );

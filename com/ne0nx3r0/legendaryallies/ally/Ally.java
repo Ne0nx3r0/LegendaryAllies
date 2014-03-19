@@ -110,7 +110,7 @@ public class Ally {
             case SLIME: return AllyClassType.Support;
             case SNOWMAN: return AllyClassType.Cold;
             case SPIDER: return AllyClassType.Warrior;
-            case SQUID: return AllyClassType.Support;
+            case SQUID: return AllyClassType.Aqua;
             case VILLAGER: return AllyClassType.Carpenter;
             case WITCH: return AllyClassType.Mage;
             case WITHER: return AllyClassType.Undead;
@@ -144,7 +144,7 @@ public class Ally {
             case SLIME: return AllyClassType.Mage;
             case SNOWMAN: return AllyClassType.Carpenter;
             case SPIDER: return AllyClassType.Wild;
-            case SQUID: return AllyClassType.Aqua;
+            case SQUID: return AllyClassType.Flying;
             case VILLAGER: return AllyClassType.Support;
             case WITCH: return AllyClassType.Alchemist;
             case WITHER: return AllyClassType.Mage;
