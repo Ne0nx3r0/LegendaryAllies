@@ -1,6 +1,6 @@
 name: LegendaryAllies
 main: com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin
-version: '0.2.18a'
+version: '0.2.19a'
 description: Addon for EchoPet that allows players to get powerful summons
 commands:
     la:

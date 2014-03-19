@@ -22,7 +22,7 @@ public class Harvest extends AllySkill {
             AllySkillType.Harvest,
             AllyClassType.Farmer,
             "Harvest","Harvests all nearby resources \nthat are ready",
-            30,
+            45,
             dropProbability
         );
     }
@@ -76,7 +76,7 @@ public class Harvest extends AllySkill {
         
         return true;
     }
-
+    
     private boolean isFarmResource(Block block) {
         switch(block.getType()) {
             case CROPS:
@@ -91,6 +91,10 @@ public class Harvest extends AllySkill {
                 if(block.getData() == 7) {
                     return true;
                 }
+            case MELON_BLOCK:
+                return true;
+            case PUMPKIN:
+                return true;
         }
         
         return false;
@@ -107,11 +111,19 @@ public class Harvest extends AllySkill {
                 };
             case POTATO:
                 return new ItemStack[]{
-                    new ItemStack(Material.POTATO,new Random().nextInt(3)+1)
+                    new ItemStack(Material.POTATO_ITEM,new Random().nextInt(3)+1)
                 };
             case CARROT:
                 return new ItemStack[]{
-                    new ItemStack(Material.CARROT,new Random().nextInt(3)+1)
+                    new ItemStack(Material.CARROT_ITEM,new Random().nextInt(3)+1)
+                };
+            case MELON_BLOCK:
+                return new ItemStack[]{
+                    new ItemStack(Material.MELON)
+                };
+            case PUMPKIN:
+                return new ItemStack[]{
+                    new ItemStack(Material.PUMPKIN,1)
                 };
         }
     }

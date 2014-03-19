@@ -35,6 +35,7 @@ public class AllySkillsManager {
         this.addSkill(new Twilight(1));
         this.addSkill(new Midnight(3));
         this.addSkill(new Harvest(7));
+        this.addSkill(new Sprout(7));
         
         
         this.cooldowns = new HashMap<>();

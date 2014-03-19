@@ -12,5 +12,6 @@ public enum AllySkillType {
     VoidWall,
     Twilight,
     Midnight,
-    Harvest
+    Harvest,
+    Sprout
 }
