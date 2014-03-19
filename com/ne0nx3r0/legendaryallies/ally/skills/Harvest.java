@@ -21,7 +21,7 @@ public class Harvest extends AllySkill {
             AllySkillType.Harvest,
             AllyClassType.Farmer,
             "Harvest","Harvests all nearby resources \nthat are ready",
-            60*10,
+            30,
             dropProbability
         );
     }
@@ -45,19 +45,24 @@ public class Harvest extends AllySkill {
         Location lAlly = ally.getPet().getCraftPet().getLocation();
         World world = lAlly.getWorld();
         
-        int distance = 10;
+        int distance = 5;
         
+        int harvested = 0;
         
         for(int x = lAlly.getBlockX()-distance;x<lAlly.getBlockX()+distance;x++) {
-            for(int y = lAlly.getBlockY()-distance;y<lAlly.getBlockY()+distance;x++) {
+            for(int y = lAlly.getBlockY()-distance;y<lAlly.getBlockY()+distance;y++) {
                 for(int z = lAlly.getBlockZ()-distance;z<lAlly.getBlockZ()+distance;z++) {
                     Block block = lAlly.getWorld().getBlockAt(x,y,z);
                     
                     if(this.isFarmResource(block)) {
-                        ItemStack is = this.getMinedResource(block);
+                        harvested++;
+                        
+                        ItemStack[] is = this.getMinedResource(block);
 
-                        if(!player.getInventory().addItem(is).isEmpty()) {
-                            player.getWorld().dropItemNaturally(player.getLocation(), is);
+                        if(is != null && !player.getInventory().addItem(is).isEmpty()) {                            
+                            for(ItemStack is1 : is) {
+                                player.getWorld().dropItemNaturally(player.getLocation(), is1);
+                            }
                         }
                         
                         world.getBlockAt(x, y, z).setType(Material.AIR);
@@ -66,14 +71,15 @@ public class Harvest extends AllySkill {
             }
         }
         
-        this.send(player,ally,"Your pet harvested the crops!");
+        this.send(player,ally,"harvested "+harvested+" crops!");
         
         return true;
     }
 
     private boolean isFarmResource(Block block) {
-        if(block.getType() == Material.WHEAT) {
+        if(block.getType() == Material.CROPS) {
             if(block.getData() == (byte) 6 || block.getData() == (byte) 7) {
+
                 return true;
             }
         }
@@ -81,12 +87,15 @@ public class Harvest extends AllySkill {
         return false;
     }
 
-    private ItemStack getMinedResource(Block block) {
+    private ItemStack[] getMinedResource(Block block) {
         switch(block.getType()) {
             default:
                 return null;
-            case WHEAT:
-                return new ItemStack(Material.WHEAT);
+            case CROPS:
+                return new ItemStack[]{
+                    new ItemStack(Material.WHEAT),
+                    new ItemStack(Material.SEEDS)
+                };
         }
     }
 }
