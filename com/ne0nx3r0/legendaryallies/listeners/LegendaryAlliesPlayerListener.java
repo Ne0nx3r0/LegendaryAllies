@@ -4,8 +4,6 @@ import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.items.CommonCandy;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
-import io.github.dsh105.echopet.entity.PetData;
-import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class LegendaryAlliesPlayerListener implements Listener {
     private final LegendaryAlliesPlugin plugin;
@@ -32,8 +29,6 @@ public class LegendaryAlliesPlayerListener implements Listener {
             Ally ally = plugin.allyManager.getAllyFromSummoningItem(e.getItem());
 
             if(ally != null) {
-                e.setCancelled(true);
-
                 if(!plugin.allyManager.hasActiveAlly(e.getPlayer()) || plugin.allyManager.getActiveAlly(e.getPlayer().getName()) != ally) {
                     e.getPlayer().sendMessage(ChatColor.GRAY+"Summoning "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"!");
                     
@@ -66,7 +61,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
                         long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
 
                         if(remainingTime == 0) {
-                            if(skill.onInteract(e,ally)) {
+                            if(!e.isCancelled() && skill.onInteract(e,ally) && !e.isCancelled()) {
                                 plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
                             }
                         }
@@ -82,7 +77,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
                     
                     if(remainingTime == 0) {
-                        if(skill.onInteract(e,ally)) {
+                        if(!e.isCancelled() && skill.onInteract(e,ally)) {
                             plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally,  skill);
                         }
                     }
@@ -93,6 +88,8 @@ public class LegendaryAlliesPlayerListener implements Listener {
                 else {
                     e.getPlayer().sendMessage(ChatColor.RED+"No skill available");
                 }
+                
+                e.setCancelled(true);
             }
         }
     }
@@ -129,12 +126,10 @@ public class LegendaryAlliesPlayerListener implements Listener {
     
     @EventHandler
     public void onPlayerInteractWithEntity(PlayerInteractEntityEvent e) {
-        if(e.getPlayer().getItemInHand() != null) {
+        if(!e.isCancelled() && e.getPlayer().getItemInHand() != null) {
             Ally ally = plugin.allyManager.getAllyFromSummoningItem(e.getPlayer().getItemInHand());
 
             if(ally != null && plugin.allyManager.getActiveAlly(e.getPlayer().getName()) == ally) {
-                e.setCancelled(true);
-
                 if(ally.getSecondarySkill() != null) {
                     AllySkill skill = ally.getSecondarySkill();
                     
@@ -149,6 +144,8 @@ public class LegendaryAlliesPlayerListener implements Listener {
                         e.getPlayer().sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
                     }
                 }
+                
+                e.setCancelled(true);
             }
         }
     }
@@ -197,6 +194,8 @@ public class LegendaryAlliesPlayerListener implements Listener {
             Player player = ((Player) e.getWhoClicked()); 
 
             if(ally.getPrimarySkill() != null || ally.getSecondarySkill() != null ) {
+                player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" ate the "+ChatColor.GREEN+"Common Candy"+ChatColor.GRAY+"!");
+                    
                 if(ally.getPrimarySkill() != null) {
                     player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" forgot "+ChatColor.GREEN+ally.getPrimarySkill().getName()+ChatColor.GRAY+"!");
                     

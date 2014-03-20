@@ -5,11 +5,13 @@ import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
 import lib.PatPeter.SQLibrary.SQLite;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 
 public class LootManager {
     private final LegendaryAlliesPlugin plugin;
@@ -154,5 +156,83 @@ public class LootManager {
         }
         
         return false;
+    }
+
+    public ItemStack chanceToDropRandomSkillDisk(EntityType entityType) {
+        int chanceToDrop = 0;
+   
+        switch(entityType) {
+            case ZOMBIE:
+                chanceToDrop = 125;//1.25%
+                break;
+            case SKELETON:
+                chanceToDrop = 125;
+                break;
+            case CREEPER:
+                chanceToDrop = 90;
+                break;
+            case SPIDER:
+                    chanceToDrop = 150;
+                    break;
+            case GIANT:
+                    chanceToDrop = 200;
+                    break;
+            case SLIME:
+                    chanceToDrop = 50;
+                    break;
+            case GHAST:
+                    chanceToDrop = 100;
+                    break;
+            case PIG_ZOMBIE:
+                    chanceToDrop = 75;
+                    break;
+            case ENDERMAN:
+                    chanceToDrop = 110;
+                    break;
+            case CAVE_SPIDER:
+                    chanceToDrop = 125;
+                    break;
+            case SILVERFISH:
+                    chanceToDrop = 100;
+                    break;
+            case BLAZE:
+                    chanceToDrop = 200;
+                    break;
+            case MAGMA_CUBE:
+                    chanceToDrop = 150;
+                    break;
+            case ENDER_DRAGON:
+                    chanceToDrop = 2000;
+                    break;
+            case WITHER:
+                    chanceToDrop = 1200;
+                    break;
+            case WITCH:
+                    chanceToDrop = 150;
+                    break;
+            case VILLAGER:
+                    chanceToDrop = 75;
+                    break;
+        }
+        
+        int roll = new Random().nextInt(10000);//100.00%
+
+        plugin.getLogger().log(Level.INFO, "{0} chance rolled {1}", new Object[]{
+            chanceToDrop, 
+            roll
+        });
+
+        if(roll < chanceToDrop) {
+            AllySkill skill = this.getWeightedRandomSkill();
+            
+            plugin.getLogger().log(Level.INFO, "{0} was killed and dropped a {1} skill disk", new Object[]{
+                entityType, 
+                skill.getName()
+            });
+            
+            return plugin.skillsManager.createSkillDiskItem(skill);
+        }
+        
+        return null;
     }
 }

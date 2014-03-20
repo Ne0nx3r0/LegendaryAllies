@@ -17,7 +17,7 @@ public class MassHeal extends AllySkill {
             AllyClassType.Support,
             "Mass Heal",
             "Self and nearby creatures are\n instantly healed. Healing has \n a negative effect on undead\nharming them instead",
-            60*5,
+            45,
             dropProbability
         );
     }
@@ -76,10 +76,10 @@ public class MassHeal extends AllySkill {
         }
         
         if(healed > 0) {
-            this.send(caster,ally,"healed "+healed+" targets!");
+            this.send(caster,ally,"healed "+healed+" total targets!");
         }
         if(harmed > 0) {
-            this.send(caster,ally,"harmed "+harmed+" targets!");  
+            this.send(caster,ally,"harmed "+harmed+" total targets!");  
         }
         
         if(healed == 0 && harmed == 0) {
@@ -114,6 +114,8 @@ public class MassHeal extends AllySkill {
             if(caster.equals(target)) {
                 this.send(caster, ally, "healed you!");
             }
+            
+            target.getWorld().playEffect(target.getLocation(), Effect.HEART, 1);
         }
         else {
             double damage = target.getHealth() - healAmount;
@@ -123,7 +125,7 @@ public class MassHeal extends AllySkill {
             target.getLocation().getWorld()
                     .playEffect(target.getLocation(), Effect.MAGIC_CRIT, 1, 1);
             
-            this.send(caster, ally, "harmed a target with healing energy!");
+            target.getWorld().playEffect(target.getLocation(), Effect.WITCH_MAGIC, 1);
         }
 
         return true;
