@@ -176,6 +176,8 @@ public class AllyManager {
         }
         
         ally.setPet(pet);
+        
+        ally.setLastSummonedBy(player.getName());
 
         this.activeAllies.put(player.getName(), ally);
     }
@@ -247,8 +249,14 @@ public class AllyManager {
                         petData.add(PetData.valueOf(sPetData));
                     }
                 }
+                
+                String lastSummonedby = null;
+                
+                if(tempAlly.containsKey("lastSummonedby")) {
+                    lastSummonedby = (String) tempAlly.get("lastSummonedby");
+                }
 
-                loadedAllies.put(allyId,new Ally(allyId,petType,name,xp,hp,attackPower,defense,primarySkill,secondarySkill,petData));
+                loadedAllies.put(allyId,new Ally(allyId,petType,name,xp,hp,attackPower,defense,primarySkill,secondarySkill,petData,lastSummonedby));
             }
         }
         

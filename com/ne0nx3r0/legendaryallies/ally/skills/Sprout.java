@@ -17,7 +17,7 @@ public class Sprout extends AllySkill {
             AllySkillType.Sprout,
             AllyClassType.Farmer,
             "Sprout","Causes saplings and other\nplants to grow",
-            5,
+            45,
             dropProbability
         );
     }

@@ -5,7 +5,6 @@ package com.ne0nx3r0.legendaryallies.ally.skills;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.AllyClassType;
 import java.util.Random;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,7 +21,7 @@ public class Harvest extends AllySkill {
             AllySkillType.Harvest,
             AllyClassType.Farmer,
             "Harvest","Harvests all nearby resources \nthat are ready",
-            45,
+            60,
             dropProbability
         );
     }

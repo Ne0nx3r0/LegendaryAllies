@@ -2,6 +2,7 @@ package com.ne0nx3r0.legendaryallies.listeners;
 
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
+import com.ne0nx3r0.legendaryallies.ally.items.CommonCandy;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import io.github.dsh105.echopet.entity.PetData;
 import java.util.ArrayList;
@@ -190,6 +191,29 @@ public class LegendaryAlliesPlayerListener implements Listener {
             }
             else {
                 ((Player) e.getWhoClicked()).sendMessage(ChatColor.RED+ally.getName()+" cannot learn anymore skills!");
+            }
+        }
+        else if(ally != null && CommonCandy.isCommonCandy(e.getCursor())) {
+            Player player = ((Player) e.getWhoClicked()); 
+
+            if(ally.getPrimarySkill() != null || ally.getSecondarySkill() != null ) {
+                if(ally.getPrimarySkill() != null) {
+                    player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" forgot "+ChatColor.GREEN+ally.getPrimarySkill().getName()+ChatColor.GRAY+"!");
+                    
+                    ally.setPrimarySkill(null);
+                }
+                if(ally.getSecondarySkill() != null) {
+                    player.sendMessage(ChatColor.GREEN+ally.getName()+ChatColor.GRAY+" forgot "+ChatColor.GREEN+ally.getSecondarySkill().getName()+ChatColor.GRAY+"!");
+                    
+                    ally.setSecondarySkill(null);
+                }
+
+                plugin.allyManager.setAllyItemMetaData(e.getCurrentItem(), ally);
+
+                e.setCursor(null);
+            }
+            else {
+                player.sendMessage(ChatColor.RED+ally.getName()+" doesn't have any skills to forget!");
             }
         }
     }

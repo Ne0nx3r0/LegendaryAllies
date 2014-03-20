@@ -13,5 +13,7 @@ public enum AllySkillType {
     Twilight,
     Midnight,
     Harvest,
-    Sprout
+    Sprout,
+    VoidShift,
+    MassHeal
 }

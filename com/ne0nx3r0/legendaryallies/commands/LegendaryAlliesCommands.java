@@ -2,6 +2,7 @@ package com.ne0nx3r0.legendaryallies.commands;
 
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
+import com.ne0nx3r0.legendaryallies.ally.items.CommonCandy;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkillType;
 import io.github.dsh105.echopet.entity.PetType;
@@ -36,6 +37,9 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 case "createSkillDisk":
                 case "csd":
                     return this._createSkillDisk(cs,args);
+                case "createCommonCandy":
+                case "ccc":
+                    return this._createCommonCandy(cs,args);
             }
         }
         
@@ -320,6 +324,57 @@ public class LegendaryAlliesCommands implements CommandExecutor {
             plugin.allyManager.removeAlly(ally);
             
             cs.sendMessage("Deleted "+allyName+" (LMC#"+allyId+")");  
+        }
+        
+        return true;
+    }
+
+    private boolean _createCommonCandy(CommandSender cs, String[] args) {
+        if(!this.hasCommandPermission(cs, "admin", "Create a common candy")) {
+            return true;
+        }
+        
+        // /la createSkillDisk <SKILLTYPE> [username]
+        if(args.length < 1) {
+            this.send(cs,"Create Common Candy",
+                "Usage:",
+                "/la createCommonCandy [username]",
+                "/la ccc [username]"
+            );
+        }
+        else {
+            if(!(cs instanceof Player) && args.length < 2) {
+                cs.sendMessage(ChatColor.RED+"You must specify a player!");
+                
+                return true;
+            }
+            
+            Player player;
+            
+            if(args.length == 1) {
+                player = (Player) cs;
+            }
+            else {
+                player = Bukkit.getPlayer(args[1]);
+                
+                if(player == null) {
+                    cs.sendMessage(ChatColor.RED+"Invalid player!");
+
+                    return true;
+                }
+            }
+
+            CommonCandy cc = new CommonCandy();
+            
+            if(!player.getInventory().addItem(cc).isEmpty()) {
+                player.getWorld().dropItemNaturally(player.getLocation(), cc);
+            }
+
+            player.sendMessage(ChatColor.GRAY+"You received a "+ChatColor.GREEN+"Common Candy"+ChatColor.GRAY+"!");
+            
+            if(!cs.equals(player)) {
+                this.send(cs,"Create Common Candy","Gave "+player.getName()+" a "+ChatColor.GREEN+"Common Candy"+ChatColor.GRAY+"!");
+            }
         }
         
         return true;

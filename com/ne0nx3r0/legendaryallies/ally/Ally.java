@@ -18,6 +18,7 @@ public class Ally {
     private AllySkill secondarySkill;
     private Pet pet;
     private ArrayList<PetData> petData;
+    private String lastSummonedBy;
     
     public Ally(int id,PetType petType) {
         this.allyId = id;
@@ -25,7 +26,7 @@ public class Ally {
     }
 
     // Generally used to load a saved ally to memory
-    Ally(int allyId, PetType petType, String name, int xp,int hp,int attackPower,int defense,AllySkill primarySkill,AllySkill secondarySkill, ArrayList<PetData> petData) {
+    Ally(int allyId, PetType petType, String name, int xp,int hp,int attackPower,int defense,AllySkill primarySkill,AllySkill secondarySkill, ArrayList<PetData> petData,String lastSummonedBy) {
         this.allyId = allyId;
         this.petType = petType;
         this.name = name;
@@ -189,5 +190,13 @@ public class Ally {
     
     public void setPetData(ArrayList<PetData> petData) {
         this.petData = petData;
+    }
+
+    public void setLastSummonedBy(String playerName) {
+        this.lastSummonedBy = playerName;
+    }
+    
+    public String getLastSummonedBy() {
+        return this.lastSummonedBy;
     }
 }
