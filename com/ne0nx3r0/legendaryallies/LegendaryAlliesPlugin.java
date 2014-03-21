@@ -10,10 +10,7 @@ import com.ne0nx3r0.legendaryallies.listeners.LegendaryAlliesPetListener;
 import com.ne0nx3r0.legendaryallies.loot.LootManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import io.github.dsh105.echopet.api.EchoPetAPI;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
         
 public class LegendaryAlliesPlugin extends JavaPlugin {

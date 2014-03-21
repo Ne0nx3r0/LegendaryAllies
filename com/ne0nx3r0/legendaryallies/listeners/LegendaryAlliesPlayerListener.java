@@ -4,7 +4,10 @@ import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.items.CommonCandy;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 
 public class LegendaryAlliesPlayerListener implements Listener {
     private final LegendaryAlliesPlugin plugin;
@@ -217,7 +221,6 @@ public class LegendaryAlliesPlayerListener implements Listener {
         }
     }
     
-    
     @EventHandler
     public void onPlayerDropAlly(PlayerDropItemEvent e) {
         Ally ally = plugin.allyManager.getAllyFromSummoningItem(e.getItemDrop().getItemStack());
@@ -230,6 +233,23 @@ public class LegendaryAlliesPlayerListener implements Listener {
                 
                 plugin.allyManager.unSummonAlly(e.getPlayer());
             }
+        }
+    }
+    
+    @EventHandler
+    public static void onPortalTravel(PlayerPortalEvent e)
+    {
+        if(e.getTo().getWorld().getEnvironment().equals(Environment.THE_END))
+        {            
+            Location newTo = e.getFrom();
+            
+            newTo.setWorld(e.getTo().getWorld());
+            
+            e.setTo(newTo);
+            
+            e.setCancelled(true);
+            
+            e.getPlayer().teleport(newTo);
         }
     }
 }

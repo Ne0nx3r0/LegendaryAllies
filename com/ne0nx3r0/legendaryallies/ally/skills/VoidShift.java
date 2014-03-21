@@ -13,7 +13,7 @@ public class VoidShift extends AllySkill {
     public VoidShift(int dropProbability) {
         super(
                 AllySkillType.VoidShift,
-                AllyClassType.Nether,
+                AllyClassType.Void,
                 "Void Shift","Shift into or from The Void",
                 30,
                 dropProbability);
@@ -41,15 +41,15 @@ public class VoidShift extends AllySkill {
         
         if(sCurrentWorld.contains("_the_end")) {
             teleportTo.setWorld(Bukkit.getWorld(sCurrentWorld.substring(0, sCurrentWorld.indexOf("_the_end"))));
-            teleportTo.setX(teleportTo.getBlockX()*8);
-            teleportTo.setZ(teleportTo.getBlockZ()*8);
+            teleportTo.setX(teleportTo.getBlockX());
+            teleportTo.setZ(teleportTo.getBlockZ());
             
             this.send(player,ally,"shifted you out of The Void!");
         }
         else {
             teleportTo.setWorld(Bukkit.getWorld(sCurrentWorld+"_the_end"));
-            teleportTo.setX(teleportTo.getBlockX()/8);
-            teleportTo.setZ(teleportTo.getBlockZ()/8);
+            teleportTo.setX(teleportTo.getBlockX());
+            teleportTo.setZ(teleportTo.getBlockZ());
             
             this.send(player,ally,"shifted you into The Void!");
         }
