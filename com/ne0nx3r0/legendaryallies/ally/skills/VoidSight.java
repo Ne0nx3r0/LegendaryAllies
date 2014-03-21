@@ -47,8 +47,8 @@ public class VoidSight extends AllySkill {
                             for(int k=z-size;k<z+size;k++) {
                                 Block b = world.getBlockAt(i, j, k);
 
-                                if(!b.getType().equals(Material.AIR)) {
-                                    player.sendBlockChange(b.getLocation(), Material.AIR, (byte) 0);
+                                if(!b.getType().equals(Material.AIR) && !b.getType().equals(Material.GLASS)) {
+                                    player.sendBlockChange(b.getLocation(), Material.GLASS, (byte) 0);
                                 }
                             }
                         }
@@ -72,7 +72,7 @@ public class VoidSight extends AllySkill {
                             for(int k=z-size;k<z+size;k++) {
                                 Block b = world.getBlockAt(i, j, k);
 
-                                if(!b.getType().equals(Material.AIR)) {
+                                if(!b.getType().equals(Material.AIR) && !b.getType().equals(Material.GLASS)) {
                                     player.sendBlockChange(b.getLocation(), b.getType(), b.getData());
                                 }
                             }
