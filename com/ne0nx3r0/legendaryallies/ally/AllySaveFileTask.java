@@ -57,7 +57,13 @@ public class AllySaveFileTask implements Runnable {
 
             tempAlly.put("petData",tempData);
             
-            tempAlly.put("lastSummonedby",ally.getLastSummonedBy());
+            if(ally.getHatchedBy() != null) {
+                tempAlly.put("hatchedBy",ally.getHatchedBy());
+            }
+            
+            if(ally.getLastSummonedBy() != null) {
+                tempAlly.put("lastSummonedby",ally.getLastSummonedBy());
+            }
             
             tempAllies.add(tempAlly);
         }

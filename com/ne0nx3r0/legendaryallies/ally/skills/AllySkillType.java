@@ -19,7 +19,9 @@ public enum AllySkillType {
     Sprout(12),
     VoidShift(13),
     MassHeal(14),
-    VoidMirage(15);
+    VoidMirage(15),
+    MassExhaustion(16),
+    Exhaustion(17);
     
     private final int id;   
     

@@ -60,6 +60,7 @@ public class AllyManager {
     private final String SUMMONER_LORE_LEVEL_FORMAT   = ChatColor.GRAY+"Level: "+ChatColor.WHITE+"%s "+ChatColor.GRAY+" - "+ChatColor.WHITE+"%sXP"+ChatColor.GRAY+" to level";
     private final String SUMMONER_LORE_TYPE_FORMAT    = ChatColor.GRAY+"Type: "+ChatColor.WHITE+"%s"+ChatColor.GRAY+", "+ChatColor.WHITE+"%s";
     private final String SUMMONER_LORE_SKILLS_FORMAT  = ChatColor.GRAY+"Skills: "+ChatColor.WHITE+"%s"+ChatColor.GRAY+", "+ChatColor.WHITE+"%s";
+    private final String SUMMONER_LORE_HATCHED_FORMAT  = ChatColor.GRAY+"Hatched by: "+ChatColor.WHITE+"%s";
     
     public ItemStack createSummoningItem(Ally ally) {
         ItemStack is = new ItemStack(this.getAllyMaterial(ally.getPetType()),1,(short) 0,this.getEggId(ally.getPetType()));
@@ -100,6 +101,10 @@ public class AllyManager {
             ally.getPrimarySkill() != null ? ally.getPrimarySkill().getName() : "<empty>",
             ally.getSecondarySkill() != null ? ally.getSecondarySkill().getName() : "<empty>",
         }));
+        
+        if(ally.getHatchedBy() != null) {
+            lore.add(String.format(SUMMONER_LORE_HATCHED_FORMAT,ally.getHatchedBy()));
+        }
         
         meta.setLore(lore);
         
@@ -178,12 +183,22 @@ public class AllyManager {
         
         ally.setPet(pet);
         
+        if(ally.getHatchedBy() == null) {
+            plugin.getLogger().log(Level.INFO, player.getName()+" hatched LMCID"+ally.getAllyID());
+            
+            ally.setHatchedBy(player.getName());
+        }
+        
         ally.setLastSummonedBy(player.getName());
 
         this.activeAllies.put(player.getName(), ally);
         
-        plugin.skillsManager.setCooldown(player.getName(), ally, ally.getPrimarySkill(),2);
-        plugin.skillsManager.setCooldown(player.getName(), ally, ally.getSecondarySkill(),2);
+        if(ally.getPrimarySkill() != null) {
+            plugin.skillsManager.setCooldown(player.getName(), ally, ally.getPrimarySkill(),2);
+        }
+        if(ally.getSecondarySkill() != null) {
+            plugin.skillsManager.setCooldown(player.getName(), ally, ally.getSecondarySkill(),2);
+        }
         
         plugin.getLogger().log(Level.INFO, "{0} summoned {1} LMCID{2}", new Object[]{player.getName(), ally.getName(), ally.getAllyID()});
     }
@@ -256,13 +271,19 @@ public class AllyManager {
                     }
                 }
                 
+                String hatchedBy = null;
+                
+                if(tempAlly.containsKey("hatchedBy")) {
+                    hatchedBy = (String) tempAlly.get("hatchedBy");
+                }
+                
                 String lastSummonedby = null;
                 
                 if(tempAlly.containsKey("lastSummonedby")) {
                     lastSummonedby = (String) tempAlly.get("lastSummonedby");
                 }
 
-                loadedAllies.put(allyId,new Ally(allyId,petType,name,xp,hp,attackPower,defense,primarySkill,secondarySkill,petData,lastSummonedby));
+                loadedAllies.put(allyId,new Ally(allyId,petType,name,xp,hp,attackPower,defense,primarySkill,secondarySkill,petData,hatchedBy,lastSummonedby));
             }
         }
         

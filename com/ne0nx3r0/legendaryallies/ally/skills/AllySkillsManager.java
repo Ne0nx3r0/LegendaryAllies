@@ -39,6 +39,8 @@ public class AllySkillsManager {
         this.addSkill(new VoidSight(3));
         this.addSkill(new VoidWall(2));
         this.addSkill(new VoidMirage(3));
+        this.addSkill(new MassExhaustion(4));
+        this.addSkill(new Exhaustion(6));
         
         
         this.cooldowns = new HashMap<>();
@@ -139,7 +141,8 @@ public class AllySkillsManager {
     }
 
     private final String SKILL_DISPLAY_NAME          = ChatColor.GREEN+"%s";
-    private final String SKILL_LORE_NAME          = ChatColor.GRAY+"Skill Disk: "+ChatColor.WHITE+"%s";
+    private final String SKILL_LORE_NAME          = ChatColor.GRAY+"Skill: "+ChatColor.GREEN+"%s";
+    private final String SKILL_LORE_ID          = ChatColor.GRAY+"Skill ID: "+ChatColor.WHITE+"%s";
     private final String SKILL_LORE_DESCRIPTION   = ChatColor.WHITE+"%s";
     
     public ItemStack createSkillDiskItem(AllySkill skill) {
@@ -154,11 +157,16 @@ public class AllySkillsManager {
         List<String> lore = new ArrayList<>();
         
         lore.add(String.format(SKILL_LORE_NAME,new Object[]{
-            skill.getType().name()
+            skill.getName()
         }));
         
-        for(String descriptionLine : SKILL_LORE_DESCRIPTION.split("\n")) {
-            lore.add(String.format(descriptionLine,new Object[]{
+        lore.add(String.format(SKILL_LORE_ID,new Object[]{
+            skill.getSkillID()
+        }));
+        
+        
+        for(String descriptionLine : skill.getDescription().split("\n")) {
+            lore.add(String.format(SKILL_LORE_DESCRIPTION,new Object[]{
                 descriptionLine
             }));
         }
@@ -206,13 +214,22 @@ public class AllySkillsManager {
         if(is.hasItemMeta()) {
             ItemMeta meta = is.getItemMeta();
             
-            if(meta.getLore() != null && !meta.getLore().isEmpty()) {
-                String loreId = meta.getLore().get(0);
+            if(meta.getLore() != null && meta.getLore().size() > 1) {
+                String loreId = meta.getLore().get(1);
 
-                if(loreId.startsWith(String.format(SKILL_LORE_NAME,""))) {
+                if(loreId.startsWith(String.format(SKILL_LORE_ID,""))) {
                     String sID = loreId.substring(loreId.lastIndexOf(ChatColor.WHITE.toString()) + 2);
                     
-                    return this.skills.get(AllySkillType.valueOf(sID));
+                    int id;
+                    
+                    try {
+                        id = Integer.parseInt(sID);
+                    }
+                    catch(NumberFormatException ex) {
+                        return null;
+                    }
+                    
+                    return this.skills.get(AllySkillType.valueOf(id));
                 }
             }
         }

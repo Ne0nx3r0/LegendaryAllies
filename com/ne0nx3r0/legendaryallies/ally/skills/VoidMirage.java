@@ -51,7 +51,6 @@ public class VoidMirage extends AllySkill {
             
             for(Player pNearby : caster.getWorld().getPlayers()) {
                 if(pNearby.getLocation().distance(lCaster) < affectedPlayersDistance) {
-                    pNearby.sendMessage("you were affected!");
                     affectedPlayers.add(pNearby);
                 }
             }

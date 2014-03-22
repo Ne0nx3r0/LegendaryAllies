@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import lib.PatPeter.SQLibrary.SQLite;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 public class LootManager {
@@ -84,6 +83,7 @@ public class LootManager {
     }
     
     public boolean setMegaChunkHasDroppedLoot(Location location, boolean droppedLoot) {
+        
         int megaChunkX = location.getChunk().getX()/5;
         int megaChunkZ = location.getChunk().getZ()/5;
         
@@ -134,10 +134,10 @@ public class LootManager {
     private boolean getHasMegaChunkDroppedLootDB(int megaChunkX,int megaChunkZ) { 
         try
         {
-            PreparedStatement statement = sqlite.prepare("SELECT EXISTS(SELECT 1 FROM megachunks WHERE x=? AND z=? LIMIT 1);");
+            PreparedStatement statement = sqlite.prepare("SELECT x,z FROM megachunks WHERE x=? AND z=? LIMIT 1;");
 
             statement.setInt(1, megaChunkX);
-            statement.setInt(1, megaChunkZ);
+            statement.setInt(2, megaChunkZ);
 
             ResultSet result = statement.executeQuery();
 

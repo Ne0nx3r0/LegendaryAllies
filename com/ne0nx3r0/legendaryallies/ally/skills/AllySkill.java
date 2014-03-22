@@ -67,4 +67,8 @@ public class AllySkill {
     public int getDropProbability() {
         return this.dropProbability;
     }
+
+    public int getSkillID() {
+        return this.skillType.getSkillId();
+    }
 }
