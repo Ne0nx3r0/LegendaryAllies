@@ -1,8 +1,11 @@
 package com.ne0nx3r0.legendaryallies.ally.skills;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.AllyClassType;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -52,6 +55,14 @@ public class VoidShift extends AllySkill {
             teleportTo.setZ(teleportTo.getBlockZ());
             
             this.send(player,ally,"shifted you into The Void!");
+        }
+        
+        FlagPermissions permsByLoc = Residence.getPermsByLocForPlayer(teleportTo, player);
+
+        if(!permsByLoc.playerHas(player.getName(), sCurrentWorld, "move", true)) {
+            this.send(player, ally, "was unable to shift you! "+ChatColor.RED+"(no move permission in other world)");
+            
+            return false;
         }
         
         player.teleport(teleportTo);

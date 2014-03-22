@@ -30,14 +30,15 @@ public class AllySkillsManager {
         this.addSkill(new Midnight(3));
         this.addSkill(new MassHeal(4));
         this.addSkill(new NightVision(8));
-        this.addSkill(new PlaneShift(1));
+        this.addSkill(new PlaneShift(3));
         this.addSkill(new Replenish(4));
         this.addSkill(new Sprout(7));
         this.addSkill(new Swiftness(7));
         this.addSkill(new Twilight(1));
-        this.addSkill(new VoidShift(7));
+        this.addSkill(new VoidShift(5));
         this.addSkill(new VoidSight(3));
-        this.addSkill(new VoidWall(1));
+        this.addSkill(new VoidWall(2));
+        this.addSkill(new VoidMirage(3));
         
         
         this.cooldowns = new HashMap<>();
@@ -83,6 +84,18 @@ public class AllySkillsManager {
         }
         
         playerCooldowns.put(skill.getType(), System.currentTimeMillis() + skill.getCooldownSeconds(ally)*1000);
+    }
+
+    public void setCooldown(String playerName,Ally ally,AllySkill skill,int timeSeconds) {
+        Map<AllySkillType,Long> playerCooldowns = this.cooldowns.get(playerName);
+
+        if(playerCooldowns == null) {
+            playerCooldowns = new EnumMap<>(AllySkillType.class);
+
+            this.cooldowns.put(playerName,playerCooldowns);
+        }
+
+        playerCooldowns.put(skill.getType(), System.currentTimeMillis() + timeSeconds*1000);
     }
     
     public boolean hasCooldown(String playerName,AllySkill skill) {
@@ -146,7 +159,7 @@ public class AllySkillsManager {
         
         for(String descriptionLine : SKILL_LORE_DESCRIPTION.split("\n")) {
             lore.add(String.format(descriptionLine,new Object[]{
-                skill.getDescription()
+                descriptionLine
             }));
         }
         

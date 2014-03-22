@@ -40,11 +40,11 @@ public class AllySaveFileTask implements Runnable {
             tempAlly.put("defense",ally.getDefense());
 
             if(ally.getPrimarySkill() != null) {
-                tempAlly.put("primarySkill",ally.getPrimarySkill().getType().toString());
+                tempAlly.put("primarySkill",ally.getPrimarySkill().getType().getSkillId());
             }
 
             if(ally.getSecondarySkill() != null) {
-                tempAlly.put("secondarySkill",ally.getSecondarySkill().getType().toString());
+                tempAlly.put("secondarySkill",ally.getSecondarySkill().getType().getSkillId());
             }
 
             ArrayList<String> tempData = new ArrayList<>();

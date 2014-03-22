@@ -65,7 +65,7 @@ public class LegendaryAlliesPlayerListener implements Listener {
                         long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
 
                         if(remainingTime == 0) {
-                            if(!e.isCancelled() && skill.onInteract(e,ally) && !e.isCancelled()) {
+                            if(!e.isCancelled() && skill.onInteract(e,ally)) {
                                 plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
                             }
                         }
@@ -140,16 +140,16 @@ public class LegendaryAlliesPlayerListener implements Listener {
                     long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
                     
                     if(remainingTime == 0) {
-                        plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
-                        
-                        skill.onInteractEntity(e, ally);
+                        if(skill.onInteractEntity(e, ally)) {
+                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
+                
+                            e.setCancelled(true);
+                        }
                     }
                     else {
                         e.getPlayer().sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
                     }
                 }
-                
-                e.setCancelled(true);
             }
         }
     }

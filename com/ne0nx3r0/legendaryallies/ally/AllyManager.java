@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -180,6 +181,11 @@ public class AllyManager {
         ally.setLastSummonedBy(player.getName());
 
         this.activeAllies.put(player.getName(), ally);
+        
+        plugin.skillsManager.setCooldown(player.getName(), ally, ally.getPrimarySkill(),2);
+        plugin.skillsManager.setCooldown(player.getName(), ally, ally.getSecondarySkill(),2);
+        
+        plugin.getLogger().log(Level.INFO, "{0} summoned {1} LMCID{2}", new Object[]{player.getName(), ally.getName(), ally.getAllyID()});
     }
 
     public Ally getActiveAlly(String playerName) {
@@ -222,7 +228,7 @@ public class AllyManager {
                 AllySkill primarySkill = null; 
                 try {
                     if(tempAlly.containsKey("primarySkill")) {
-                        primarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("primarySkill")));
+                        primarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((int) tempAlly.get("primarySkill")));
                     }
                 }
                 catch(Exception e) {
@@ -233,7 +239,7 @@ public class AllyManager {
                 
                 try {
                     if(tempAlly.containsKey("secondarySkill")) {
-                        secondarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((String) tempAlly.get("secondarySkill")));
+                        secondarySkill = plugin.skillsManager.getSkillFromType(AllySkillType.valueOf((int) tempAlly.get("secondarySkill")));
                     }
                 }
                 catch(Exception e) {

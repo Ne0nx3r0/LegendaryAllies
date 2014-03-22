@@ -10,8 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,7 +28,7 @@ public class Harvest extends AllySkill {
     public boolean onInteract(PlayerInteractEvent e, Ally ally) {
         return this.mineCrops(e.getPlayer(), ally);
     }
-    
+    /* disabling due to permissions issues - oninteract will get cancelled if not allowed
     @Override
     public boolean onDamageOther(EntityDamageByEntityEvent e, Ally ally) {
         return this.mineCrops((Player) e.getDamager(), ally);
@@ -39,7 +37,7 @@ public class Harvest extends AllySkill {
     @Override
     public boolean onInteractEntity(PlayerInteractEntityEvent e, Ally ally) {
         return this.mineCrops(e.getPlayer(), ally);
-    }
+    }*/
     
     public boolean mineCrops(Player player, Ally ally) {
         Location lAlly = ally.getPet().getCraftPet().getLocation();
