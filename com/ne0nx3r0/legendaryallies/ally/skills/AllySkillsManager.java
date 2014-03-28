@@ -29,9 +29,9 @@ public class AllySkillsManager {
         this.addSkill(new Heal(5));
         this.addSkill(new Midnight(3));
         this.addSkill(new MassHeal(4));
-        this.addSkill(new NightVision(8));
+        this.addSkill(new NightVision(7));
         this.addSkill(new PlaneShift(3));
-        this.addSkill(new Replenish(4));
+        this.addSkill(new Replenish(5));
         this.addSkill(new Sprout(7));
         this.addSkill(new Swiftness(7));
         this.addSkill(new Twilight(1));
