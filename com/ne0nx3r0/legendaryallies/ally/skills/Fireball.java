@@ -55,6 +55,10 @@ public class Fireball extends AllySkill {
     
     public boolean shootFireballFromTo(Player pOwner,Ally ally,Location sender, Location receiver) {
 
+        if(1==1) {
+            pOwner.sendMessage("This skill is temporarily disabled");
+        }
+
         Vector direction = receiver.toVector().subtract(sender.toVector()).normalize();
 
         CraftPet allyShooter = ally.getPet().getEntityPet().getBukkitEntity();

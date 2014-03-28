@@ -118,6 +118,10 @@ public class MassHeal extends AllySkill {
             target.getWorld().playEffect(target.getLocation(), Effect.HEART, 1);
         }
         else {
+             if(1==1) {
+                caster.sendMessage("This skill is temporarily not targetting undead");
+            }
+            
             double damage = target.getHealth() - healAmount;
             
             target.damage(damage,ally.getPet().getCraftPet());
