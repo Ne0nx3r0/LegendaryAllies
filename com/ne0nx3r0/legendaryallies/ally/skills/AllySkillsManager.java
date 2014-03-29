@@ -143,6 +143,7 @@ public class AllySkillsManager {
     private final String SKILL_DISPLAY_NAME          = ChatColor.GREEN+"%s";
     private final String SKILL_LORE_NAME          = ChatColor.GRAY+"Skill: "+ChatColor.GREEN+"%s";
     private final String SKILL_LORE_ID          = ChatColor.GRAY+"Skill ID: "+ChatColor.WHITE+"%s";
+    private final String SKILL_LORE_TYPE          = ChatColor.GRAY+"Type: "+ChatColor.WHITE+"%s";
     private final String SKILL_LORE_DESCRIPTION   = ChatColor.WHITE+"%s";
     
     public ItemStack createSkillDiskItem(AllySkill skill) {
@@ -164,6 +165,9 @@ public class AllySkillsManager {
             skill.getSkillID()
         }));
         
+        lore.add(String.format(SKILL_LORE_TYPE,new Object[]{
+            skill.getClassType().name()
+        }));
         
         for(String descriptionLine : skill.getDescription().split("\n")) {
             lore.add(String.format(SKILL_LORE_DESCRIPTION,new Object[]{
