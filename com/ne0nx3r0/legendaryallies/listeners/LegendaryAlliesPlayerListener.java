@@ -6,8 +6,13 @@ import com.ne0nx3r0.legendaryallies.ally.items.CommonCandy;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +23,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class LegendaryAlliesPlayerListener implements Listener {
     private final LegendaryAlliesPlugin plugin;
@@ -94,6 +100,144 @@ public class LegendaryAlliesPlayerListener implements Listener {
                 }
                 
                 e.setCancelled(true);
+            }
+            
+            // Check if they are breaking an end portal frame with an eye of ender and break it if they are
+            else if(!e.isCancelled() 
+                  && e.getItem().getType().equals(Material.EYE_OF_ENDER) 
+                  && e.getClickedBlock().getType().equals(Material.ENDER_PORTAL_FRAME))
+            {
+                Block endPortalFrame = e.getClickedBlock();
+                byte data = endPortalFrame.getData();
+                byte[] activeBfs = new byte[]{4,5,6,7};
+                
+                if(e.getAction().equals(Action.LEFT_CLICK_BLOCK) && e.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) {
+                    for(byte b : activeBfs) {
+                        if(data == b) {
+                            endPortalFrame.getWorld().dropItemNaturally(endPortalFrame.getLocation(), new ItemStack(Material.EYE_OF_ENDER));
+                        }
+                    }
+
+                    endPortalFrame.getWorld().dropItemNaturally(endPortalFrame.getLocation(), new ItemStack(Material.ENDER_PORTAL_FRAME));
+
+                    endPortalFrame.breakNaturally();
+
+                    Location lCornerPiece = this.getPortalCorner(endPortalFrame.getLocation(),true);
+                    
+                    if(lCornerPiece != null) {
+                        this.setEndPortal(lCornerPiece, false);
+                    }
+
+                    e.setCancelled(true);
+                }
+                else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                    boolean activating_end_portal = true;
+                    
+                    for(byte b : activeBfs) {
+                        if(data == b) {
+                            activating_end_portal = false;
+                        }
+                    }
+                    
+                    if(activating_end_portal){
+                        Location lCornerPiece = this.getPortalCorner(endPortalFrame.getLocation(),false);
+
+                        if(lCornerPiece != null) {
+                            this.setEndPortal(lCornerPiece, true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private Location getPortalCorner(Location lFramePiece,boolean activePortal) {
+        int[][] values = new int[12][2];
+        values[0]  = new int[]{0,-1};
+        values[1]  = new int[]{0,-2};
+        values[2]  = new int[]{0,-3};
+        values[3]  = new int[]{-1,0};
+        values[4]  = new int[]{-2,0};
+        values[5]  = new int[]{-3,0};
+        values[6]  = new int[]{-4,-1};
+        values[7]  = new int[]{-4,-2};
+        values[8]  = new int[]{-4,-3};
+        values[9]  = new int[]{-1,-4};
+        values[10] = new int[]{-2,-4};
+        values[11] = new int[]{-3,-4};
+        
+        for(int v=0; v<values.length; v++) {
+            Location lStart = lFramePiece.clone().add(values[v][0], 0, values[v][1]);
+
+            if(this.isPortalCorner(lStart,lFramePiece,activePortal)){
+                return lStart;
+            }
+        }
+        
+        return null;
+    }
+    
+    private boolean isPortalCorner(Location lCorner,Location lClickedPiece,boolean portalIsActive) {
+        byte[] activeDatas = new byte[]{4,5,6,7};
+        
+        Material m[][] = new Material[][] {
+            new Material[]{null,Material.ENDER_PORTAL_FRAME,Material.ENDER_PORTAL_FRAME,Material.ENDER_PORTAL_FRAME,null},
+            new Material[]{Material.ENDER_PORTAL_FRAME,Material.AIR,Material.AIR,Material.AIR,Material.ENDER_PORTAL_FRAME},
+            new Material[]{Material.ENDER_PORTAL_FRAME,Material.AIR,Material.AIR,Material.AIR,Material.ENDER_PORTAL_FRAME},
+            new Material[]{Material.ENDER_PORTAL_FRAME,Material.AIR,Material.AIR,Material.AIR,Material.ENDER_PORTAL_FRAME},
+            new Material[]{null,Material.ENDER_PORTAL_FRAME,Material.ENDER_PORTAL_FRAME,Material.ENDER_PORTAL_FRAME,null}
+        };
+        
+        for(int x=0;x<m.length;x++){
+            for(int z=0;z<m[0].length;z++){                
+                Location lCurrent = lCorner.clone().add(x, 0, z);
+                Material mCurrent = lCurrent.getBlock().getType();
+
+                if(m[x][z] != null){
+                    // looking for an active portal, so could be air or ender_portal
+                    if(portalIsActive && m[x][z].equals(Material.AIR) && mCurrent.equals(Material.ENDER_PORTAL)){
+                        // continue on
+                    }
+                    // type doesn't match
+                    else if(!mCurrent.equals(m[x][z])){
+                        // if it's air and it's the clicked block let it go 
+                        if(!(lCurrent.equals(lClickedPiece) && mCurrent.equals(Material.AIR))) {
+                            return false;
+                        }
+                    }
+                    // Type matched, but we need to check if the data is correct
+                    else if(mCurrent.equals(Material.ENDER_PORTAL_FRAME)){
+                        boolean isActivePiece = false;
+                        
+                        for(byte data : activeDatas){
+                            if(lCurrent.getBlock().getData() == data){
+                                isActivePiece = true;
+                            }
+                        }
+                        
+                        if(!portalIsActive && !isActivePiece && !lCurrent.equals(lClickedPiece)){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    private void setEndPortal(Location lCornerPiece,boolean activated) {
+        World world = lCornerPiece.getWorld();
+        
+        for(int x=1;x<4;x++){
+            for(int z=1;z<4;z++){
+                Block b = world.getBlockAt(lCornerPiece.getBlockX()+x, lCornerPiece.getBlockY(), lCornerPiece.getBlockZ()+z);
+                if(activated) {
+                    b.setType(Material.ENDER_PORTAL);
+                }
+                else {
+                    b.setType(Material.AIR);
+                }
             }
         }
     }
