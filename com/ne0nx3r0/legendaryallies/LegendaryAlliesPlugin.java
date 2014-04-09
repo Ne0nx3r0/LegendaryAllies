@@ -45,7 +45,7 @@ public class LegendaryAlliesPlugin extends JavaPlugin {
         
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(this.allyManager.hasActiveAlly(player)) {
-                player.sendMessage("Plugin is beind disabled, unsummoning your pet");
+                player.sendMessage("Plugin is being disabled, unsummoning your pet");
                 
                 this.allyManager.unSummonAlly(player);
             }
