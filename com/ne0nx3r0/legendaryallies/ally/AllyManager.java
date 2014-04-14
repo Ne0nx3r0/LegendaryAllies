@@ -1,11 +1,12 @@
 package com.ne0nx3r0.legendaryallies.ally;
 
+import com.dsh105.echopet.api.pet.Pet;
+import com.dsh105.echopet.compat.api.entity.IPet;
+import com.dsh105.echopet.compat.api.entity.PetData;
+import com.dsh105.echopet.compat.api.entity.PetType;
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkillType;
-import io.github.dsh105.echopet.entity.Pet;
-import io.github.dsh105.echopet.entity.PetData;
-import io.github.dsh105.echopet.entity.PetType;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,7 +167,7 @@ public class AllyManager {
             this.unSummonAlly(player);
         }
         
-        Pet pet = plugin.petAPI.givePet(player, ally.getPetType(), false);
+        IPet pet = plugin.petAPI.givePet(player, ally.getPetType(), false);
 
         pet.setPetName(ally.getName());
         
@@ -194,10 +195,18 @@ public class AllyManager {
         this.activeAllies.put(player.getName(), ally);
         
         if(ally.getPrimarySkill() != null) {
-            plugin.skillsManager.setCooldown(player.getName(), ally, ally.getPrimarySkill(),2);
+            AllySkill skill = ally.getPrimarySkill();
+            
+            if(plugin.skillsManager.getCooldownSecondsRemaining(player.getName(), skill) == 0){
+                plugin.skillsManager.setCooldown(player.getName(), ally, skill,2);
+            }
         }
         if(ally.getSecondarySkill() != null) {
-            plugin.skillsManager.setCooldown(player.getName(), ally, ally.getSecondarySkill(),2);
+            AllySkill skill = ally.getSecondarySkill();
+            
+            if(plugin.skillsManager.getCooldownSecondsRemaining(player.getName(), skill) == 0){
+                plugin.skillsManager.setCooldown(player.getName(), ally, skill,2);
+            }
         }
         
         plugin.getLogger().log(Level.INFO, "{0} summoned {1} LMCID{2}", new Object[]{player.getName(), ally.getName(), ally.getAllyID()});

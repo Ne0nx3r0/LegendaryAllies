@@ -93,7 +93,7 @@ public class Sprout extends AllySkill {
                 break;
         }
         
-        ally.getPet().getEntityPet().teleport(block.getLocation());
+        ally.getPet().teleport(block.getLocation());
         
         this.send(player,ally,"grew the plant for you!!");
         

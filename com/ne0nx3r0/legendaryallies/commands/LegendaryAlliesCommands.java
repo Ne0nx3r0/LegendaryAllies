@@ -1,11 +1,11 @@
 package com.ne0nx3r0.legendaryallies.commands;
 
+import com.dsh105.echopet.compat.api.entity.PetType;
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.items.CommonCandy;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkillType;
-import io.github.dsh105.echopet.entity.PetType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

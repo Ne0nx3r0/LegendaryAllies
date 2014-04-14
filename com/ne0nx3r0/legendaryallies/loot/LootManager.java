@@ -163,7 +163,7 @@ public class LootManager {
    
         switch(entityType) {
             case ZOMBIE:
-                chanceToDrop = 125;//1.25%
+                chanceToDrop = 125;//125/20000
                 break;
             case SKELETON:
                 chanceToDrop = 125;
@@ -219,7 +219,7 @@ public class LootManager {
             return null;
         }
         
-        int roll = new Random().nextInt(10000);//100.00%
+        int roll = new Random().nextInt(20000);//100.00%
 
         plugin.getLogger().log(Level.INFO, "{0} chance rolled {1}", new Object[]{
             chanceToDrop, 

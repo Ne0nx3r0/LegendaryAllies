@@ -1,12 +1,14 @@
 package com.ne0nx3r0.legendaryallies.listeners;
 
+import com.dsh105.echopet.compat.api.event.*;
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
-import io.github.dsh105.echopet.api.event.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class LegendaryAlliesPetListener implements Listener {
 
+    // doesn't really matter as none of these events work.
+    
     public LegendaryAlliesPetListener(LegendaryAlliesPlugin plugin) {
 
     }

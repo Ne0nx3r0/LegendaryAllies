@@ -1,9 +1,9 @@
 package com.ne0nx3r0.legendaryallies.ally;
 
+import com.dsh105.echopet.compat.api.entity.IPet;
+import com.dsh105.echopet.compat.api.entity.PetData;
+import com.dsh105.echopet.compat.api.entity.PetType;
 import com.ne0nx3r0.legendaryallies.ally.skills.AllySkill;
-import io.github.dsh105.echopet.entity.Pet;
-import io.github.dsh105.echopet.entity.PetData;
-import io.github.dsh105.echopet.entity.PetType;
 import java.util.ArrayList;
 
 public class Ally {
@@ -16,7 +16,7 @@ public class Ally {
     private int defense = 0; 
     private AllySkill primarySkill;   
     private AllySkill secondarySkill;
-    private Pet pet;
+    private IPet pet;
     private ArrayList<PetData> petData;
     private String lastSummonedBy;
     private String hatchedBy;
@@ -179,11 +179,11 @@ public class Ally {
         return this.xp / 1000;
     }
 
-    public void setPet(Pet pet) {
+    public void setPet(IPet pet) {
         this.pet = pet;
     }
     
-    public Pet getPet() {
+    public IPet getPet() {
         return this.pet;
     }
 

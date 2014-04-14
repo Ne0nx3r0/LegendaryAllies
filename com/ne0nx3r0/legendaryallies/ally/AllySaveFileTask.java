@@ -6,8 +6,8 @@
 
 package com.ne0nx3r0.legendaryallies.ally;
 
+import com.dsh105.echopet.compat.api.entity.PetData;
 import com.ne0nx3r0.legendaryallies.LegendaryAlliesPlugin;
-import io.github.dsh105.echopet.entity.PetData;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

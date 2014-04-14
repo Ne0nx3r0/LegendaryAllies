@@ -1,8 +1,9 @@
 package com.ne0nx3r0.legendaryallies.ally.skills;
 
+import com.dsh105.echopet.compat.api.entity.ICraftPet;
+import com.dsh105.echopet.compat.nms.v1_7_R3.entity.CraftPet;
 import com.ne0nx3r0.legendaryallies.ally.Ally;
 import com.ne0nx3r0.legendaryallies.ally.AllyClassType;
-import io.github.dsh105.echopet.entity.CraftPet;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -61,7 +62,7 @@ public class Fireball extends AllySkill {
 
         Vector direction = receiver.toVector().subtract(sender.toVector()).normalize();
 
-        CraftPet allyShooter = ally.getPet().getEntityPet().getBukkitEntity();
+        ICraftPet allyShooter = ally.getPet().getEntityPet().getBukkitEntity();
 
         Projectile proj = allyShooter.launchProjectile(org.bukkit.entity.Fireball.class);
         
