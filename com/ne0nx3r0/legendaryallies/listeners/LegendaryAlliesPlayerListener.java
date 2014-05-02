@@ -39,6 +39,8 @@ public class LegendaryAlliesPlayerListener implements Listener {
             Ally ally = plugin.allyManager.getAllyFromSummoningItem(e.getItem());
 
             if(ally != null) {
+                e.setCancelled(true);
+                
                 if(!plugin.allyManager.hasActiveAlly(e.getPlayer()) || plugin.allyManager.getActiveAlly(e.getPlayer().getName()) != ally) {
                     e.getPlayer().sendMessage(ChatColor.GRAY+"Summoning "+ChatColor.GREEN+ally.getName()+ChatColor.GRAY+"!");
                     
@@ -98,8 +100,6 @@ public class LegendaryAlliesPlayerListener implements Listener {
                 else {
                     e.getPlayer().sendMessage(ChatColor.RED+"No skill available");
                 }
-                
-                e.setCancelled(true);
             }
             
             // Check if they are breaking an end portal frame with an eye of ender and break it if they are
@@ -250,21 +250,24 @@ public class LegendaryAlliesPlayerListener implements Listener {
             if(player.getItemInHand() != null) {
                 Ally ally = plugin.allyManager.getAllyFromSummoningItem(player.getItemInHand());
 
-                if(ally != null && plugin.allyManager.getActiveAlly(player.getName()) == ally) {
+                if(ally != null) {
+                    
                     e.setCancelled(true);
                     
-                    if(ally.getPrimarySkill() != null) {
-                        AllySkill skill = ally.getPrimarySkill();
+                    if(plugin.allyManager.getActiveAlly(player.getName()) == ally){
+                        if(ally.getPrimarySkill() != null) {
+                            AllySkill skill = ally.getPrimarySkill();
 
-                        long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(player.getName(),skill);
+                            long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(player.getName(),skill);
 
-                        if(remainingTime == 0) {
-                            if(skill.onDamageOther(e, ally)) { 
-                                plugin.skillsManager.setCooldown(player.getName(), ally, skill);
+                            if(remainingTime == 0) {
+                                if(skill.onDamageOther(e, ally)) { 
+                                    plugin.skillsManager.setCooldown(player.getName(), ally, skill);
+                                }
                             }
-                        }
-                        else {
-                            player.sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
+                            else {
+                                player.sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
+                            }
                         }
                     }
                 }
@@ -277,21 +280,24 @@ public class LegendaryAlliesPlayerListener implements Listener {
         if(!e.isCancelled() && e.getPlayer().getItemInHand() != null) {
             Ally ally = plugin.allyManager.getAllyFromSummoningItem(e.getPlayer().getItemInHand());
 
-            if(ally != null && plugin.allyManager.getActiveAlly(e.getPlayer().getName()) == ally) {
-                if(ally.getSecondarySkill() != null) {
-                    AllySkill skill = ally.getSecondarySkill();
-                    
-                    long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
-                    
-                    if(remainingTime == 0) {
-                        if(skill.onInteractEntity(e, ally)) {
-                            plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
+            if(ally != null) {
                 
-                            e.setCancelled(true);
+                e.setCancelled(true);
+                
+                if(plugin.allyManager.getActiveAlly(e.getPlayer().getName()) == ally){
+                    if(ally.getSecondarySkill() != null) {
+                        AllySkill skill = ally.getSecondarySkill();
+
+                        long remainingTime = plugin.skillsManager.getCooldownSecondsRemaining(e.getPlayer().getName(),skill);
+
+                        if(remainingTime == 0) {
+                            if(skill.onInteractEntity(e, ally)) {
+                                plugin.skillsManager.setCooldown(e.getPlayer().getName(), ally, skill);
+                            }
                         }
-                    }
-                    else {
-                        e.getPlayer().sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
+                        else {
+                            e.getPlayer().sendMessage(String.format(ChatColor.RED+"You must wait %s more seconds!",remainingTime));
+                        }
                     }
                 }
             }

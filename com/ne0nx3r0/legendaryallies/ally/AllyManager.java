@@ -56,6 +56,31 @@ public class AllyManager {
         return ally;
     }
     
+    // Primarily to get a new ID for the ally
+    public Ally regenerateAlly(Ally ally) {
+        this.cardinality++;
+        
+        Ally newAlly = new Ally(this.cardinality,ally.getPetType());
+        
+        // transfer attributes
+        newAlly.setName(ally.getName());
+        newAlly.setPrimarySkill(ally.getPrimarySkill());
+        newAlly.setSecondarySkill(ally.getSecondarySkill());
+        newAlly.setPetData(ally.getPetData());
+        newAlly.setAttackPower(ally.getAttackPower());
+        newAlly.setDefense(ally.getDefense());
+        newAlly.setHP(ally.getHP());
+        newAlly.setHatchedBy(ally.getHatchedBy());
+        newAlly.setLastSummonedBy(ally.getLastSummonedBy());
+        newAlly.setXP(ally.getXP());
+        
+        this.allies.remove(ally.getAllyID());
+        
+        this.allies.put(newAlly.getAllyID(), newAlly);
+        
+        return ally;
+    }
+    
     private final String SUMMONER_DISPLAY_FORMAT      = ChatColor.GREEN+"%s";
     private final String SUMMONER_LORE_ID_FORMAT      = ChatColor.GRAY+"LMC ID: "+ChatColor.WHITE+"%s";
     private final String SUMMONER_LORE_LEVEL_FORMAT   = ChatColor.GRAY+"Level: "+ChatColor.WHITE+"%s "+ChatColor.GRAY+" - "+ChatColor.WHITE+"%sXP"+ChatColor.GRAY+" to level";
@@ -132,7 +157,9 @@ public class AllyManager {
                     return null;
                 }
                 
-                return this.allies.get(id);
+                Ally ally = this.allies.get(id);
+
+                return ally;
             }
         }
         
