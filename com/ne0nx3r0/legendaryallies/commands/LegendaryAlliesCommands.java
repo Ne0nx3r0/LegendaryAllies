@@ -271,16 +271,20 @@ public class LegendaryAlliesCommands implements CommandExecutor {
                 return true;
             }
             
-            ItemStack is = plugin.allyManager.createSummoningItem(ally);
+            Ally newAlly = plugin.allyManager.regenerateAlly(ally);
+            
+            ally = null;
+            
+            ItemStack is = plugin.allyManager.createSummoningItem(newAlly);
 
             if(!player.getInventory().addItem(is).isEmpty()) {
                 player.getWorld().dropItemNaturally(player.getLocation(), is);
             }
 
-            player.sendMessage("You received a legendary ally copy! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
+            player.sendMessage("You received a legendary ally copy! ("+newAlly.getName()+" #LMC"+newAlly.getAllyID()+")");
             
             if(!cs.equals(player)) {
-                this.send(cs,"Create","Gave "+player.getName()+" a legendary ally copy! ("+ally.getName()+" #LMC"+ally.getAllyID()+")");
+                this.send(cs,"Create","Gave "+player.getName()+" a legendary ally copy! ("+newAlly.getName()+" #LMC"+newAlly.getAllyID()+")");
             }
         }
         
