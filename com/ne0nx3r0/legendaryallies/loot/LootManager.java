@@ -221,11 +221,6 @@ public class LootManager {
         
         int roll = new Random().nextInt(20000);//100.00%
 
-        plugin.getLogger().log(Level.INFO, "{0} chance rolled {1}", new Object[]{
-            chanceToDrop, 
-            roll
-        });
-
         if(roll < chanceToDrop) {
             AllySkill skill = this.getWeightedRandomSkill();
             
